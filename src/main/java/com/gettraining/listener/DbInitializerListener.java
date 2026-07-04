@@ -114,22 +114,31 @@ public class DbInitializerListener implements ServletContextListener {
                     )
                 """);
 
-                // Tabela Administrador
+                // Tabela Administrador com suporte a níveis de permissão (papel)
                 stmt.executeUpdate("""
                     CREATE TABLE IF NOT EXISTS administrador (
                         id       SERIAL PRIMARY KEY,
                         username VARCHAR(50) UNIQUE NOT NULL,
-                        password VARCHAR(255) NOT NULL
+                        password VARCHAR(255) NOT NULL,
+                        papel    VARCHAR(50) DEFAULT 'GESTOR'
                     )
                 """);
+                
+                try {
+                    stmt.executeUpdate("ALTER TABLE administrador ADD COLUMN IF NOT EXISTS papel VARCHAR(50) DEFAULT 'GESTOR'");
+                } catch (Exception e) {
+                    // Ignora erro se a sintaxe IF NOT EXISTS não for suportada em versões muito antigas do PostgreSQL
+                }
                 
                 // Inserir Admin default (username: admin, password: admin -> hash SHA-256)
                 // hash de 'admin' = 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
                 stmt.executeUpdate("""
-                    INSERT INTO administrador (username, password)
-                    SELECT 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'
+                    INSERT INTO administrador (username, password, papel)
+                    SELECT 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'SUPER_ADMIN'
                     WHERE NOT EXISTS (SELECT 1 FROM administrador WHERE username = 'admin')
                 """);
+                
+                stmt.executeUpdate("UPDATE administrador SET papel = 'SUPER_ADMIN' WHERE username = 'admin'");
 
                 System.out.println("[DB Initializer] Estrutura de Tabelas verificada com sucesso!");
             }

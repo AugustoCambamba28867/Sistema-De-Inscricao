@@ -14,6 +14,12 @@ public class EditarServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        com.gettraining.model.Admin admin = (com.gettraining.model.Admin) req.getSession().getAttribute("admin");
+        if (admin != null && "LEITOR".equals(admin.getPapel())) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Acesso Negado.");
+            return;
+        }
+
         String idParam = req.getParameter("id");
         if (idParam != null && !idParam.isBlank()) {
             try {
@@ -34,6 +40,12 @@ public class EditarServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        com.gettraining.model.Admin admin = (com.gettraining.model.Admin) req.getSession().getAttribute("admin");
+        if (admin != null && "LEITOR".equals(admin.getPapel())) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Acesso Negado.");
+            return;
+        }
+
         req.setCharacterEncoding("UTF-8");
         
         try {

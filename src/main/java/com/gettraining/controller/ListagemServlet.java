@@ -70,6 +70,12 @@ public class ListagemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        com.gettraining.model.Admin admin = (com.gettraining.model.Admin) req.getSession().getAttribute("admin");
+        if (admin == null || !"SUPER_ADMIN".equals(admin.getPapel())) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Acesso Negado.");
+            return;
+        }
+
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         String idParam = req.getParameter("id");

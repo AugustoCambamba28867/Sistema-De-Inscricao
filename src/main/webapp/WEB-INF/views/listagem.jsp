@@ -29,6 +29,9 @@
 <nav class="nav-bar">
     <a href="${pageContext.request.contextPath}/dashboard" id="nav-dashboard">📊 Dashboard</a>
     <a href="${pageContext.request.contextPath}/listagem" class="activo" id="nav-listagem">📋 Gerir Inscrições</a>
+    <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
+        <a href="${pageContext.request.contextPath}/utilizadores">👥 Utilizadores</a>
+    </c:if>
 </nav>
 
 <main class="conteudo">
@@ -92,23 +95,27 @@
                                                id="btnDetalhe${ins.id}">
                                                 🔍 Ver
                                             </a>
-                                            <a href="${pageContext.request.contextPath}/editar?id=${ins.id}"
-                                               class="btn btn-primario"
-                                               style="padding:6px 14px; font-size:12px;"
-                                               id="btnEditar${ins.id}">
-                                                ✏️ Editar
-                                            </a>
-                                            <form method="post"
-                                                  action="${pageContext.request.contextPath}/listagem"
-                                                  onsubmit="return confirm('Eliminar inscrição #${ins.id}?')"
-                                                  style="display:inline;">
-                                                <input type="hidden" name="action" value="eliminar">
-                                                <input type="hidden" name="id" value="${ins.id}">
-                                                <button type="submit" class="btn btn-perigo"
-                                                        id="btnEliminar${ins.id}">
-                                                    🗑 Eliminar
-                                                </button>
-                                            </form>
+                                            <c:if test="${sessionScope.admin.papel != 'LEITOR'}">
+                                                <a href="${pageContext.request.contextPath}/editar?id=${ins.id}"
+                                                   class="btn btn-primario"
+                                                   style="padding:6px 14px; font-size:12px;"
+                                                   id="btnEditar${ins.id}">
+                                                    ✏️ Editar
+                                                </a>
+                                            </c:if>
+                                            <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
+                                                <form method="post"
+                                                      action="${pageContext.request.contextPath}/listagem"
+                                                      onsubmit="return confirm('Eliminar inscrição #${ins.id}?')"
+                                                      style="display:inline;">
+                                                    <input type="hidden" name="action" value="eliminar">
+                                                    <input type="hidden" name="id" value="${ins.id}">
+                                                    <button type="submit" class="btn btn-perigo"
+                                                            id="btnEliminar${ins.id}">
+                                                        🗑 Eliminar
+                                                    </button>
+                                                </form>
+                                            </c:if>
                                         </div>
                                     </td>
                                 </tr>
