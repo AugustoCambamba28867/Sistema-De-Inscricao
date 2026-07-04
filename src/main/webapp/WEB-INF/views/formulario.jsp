@@ -286,6 +286,10 @@
                 <button type="submit" class="btn btn-primario" id="btnGravar">
                     💾 Gravar Inscrição
                 </button>
+                <button type="button" onclick="preencherAutomatico()" class="btn" id="btnAutoFill"
+                    style="background:linear-gradient(135deg,#059669 0%,#047857 100%);color:white;box-shadow:0 2px 8px rgba(5,150,105,.3);">
+                    ⚡ Auto-Preencher (Teste)
+                </button>
                 <button type="reset" class="btn btn-secundario" id="btnLimpar">
                     🔄 Limpar
                 </button>
@@ -305,5 +309,61 @@
 </footer>
 
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
+<script>
+// Auto-preenchimento com dados de teste (para demos e provas)
+const nomesMasc = ['Augusto Cambamba','Carlos Manuel','João Pedro Silva','Miguel António','Fernando Costa','David Lopes','Rafael Neto'];
+const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria Luísa','Vanessa Gomes','Catarina Ferreira','Diana Alves'];
+const cursos    = ['Gestão de Recursos Humanos','Contabilidade e Gestão','Marketing Digital','Informática e Programação','Logística e Supply Chain','Finanças Empresariais'];
+const horarios  = ['Manhã','Tarde','Fim de Tarde','Sábado'];
+const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga'];
+
+function preencherAutomatico() {
+    const isMasc = Math.random() > 0.45;
+    const nomes  = isMasc ? nomesMasc : nomesFem;
+    const nome   = nomes[Math.floor(Math.random() * nomes.length)];
+    const curso  = cursos[Math.floor(Math.random() * cursos.length)];
+    const horario= horarios[Math.floor(Math.random() * horarios.length)];
+    const mun    = municipios[Math.floor(Math.random() * municipios.length)];
+    const uid    = Date.now();
+
+    // Curso
+    document.getElementById('curso').value = curso;
+    document.querySelector(`input[name='horario'][value='${horario}']`).checked = true;
+
+    // Formando
+    document.getElementById('nome').value = nome;
+    document.getElementById('morada').value = 'Rua ' + Math.floor(Math.random()*200+1) + ', Bairro Central';
+    document.getElementById('localidade').value = mun;
+    document.getElementById('municipio').value = mun;
+    document.getElementById('telefone').value = '+244 222 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,3) + ' ' + String(Math.floor(Math.random()*9000+1000));
+    document.getElementById('telemovel').value = '+244 9' + (isMasc ? '2' : '3') + String(Math.floor(Math.random()*9000000+1000000));
+    document.getElementById('email').value = nome.toLowerCase().replace(/\s+/g,'.').replace(/[\u00e3\u00e7\u00e9\u00ea\u00ed\u00f5\u00fa]/g,'a') + uid + '@gmail.com';
+    const ano = 1990 + Math.floor(Math.random()*20);
+    const mes = String(Math.floor(Math.random()*12+1)).padStart(2,'0');
+    const dia = String(Math.floor(Math.random()*28+1)).padStart(2,'0');
+    document.getElementById('dataNascimento').value = `${ano}-${mes}-${dia}`;
+    document.querySelector(`input[name='sexo'][value='${isMasc ? 'M' : 'F'}']`).checked = true;
+
+    // Entidade Pagadora
+    document.getElementById('epNome').value = 'Empresa ' + mun + ' Lda.';
+    document.getElementById('epMorada').value = 'Av. 1º Congresso, Nº ' + Math.floor(Math.random()*500+1);
+    document.getElementById('epLocalidade').value = mun;
+    document.getElementById('epMunicipio').value = mun;
+    document.getElementById('epTelefone').value = '+244 222 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,6);
+    document.getElementById('epEmail').value = 'geral@empresa' + uid + '.co.ao';
+    document.getElementById('epNif').value = String(Math.floor(Math.random()*9000000000+1000000000));
+
+    // Resp. RH
+    const rhNome = isMasc ? nomesFem[Math.floor(Math.random()*nomesFem.length)] : nomesMasc[Math.floor(Math.random()*nomesMasc.length)];
+    document.getElementById('rhNome').value = rhNome;
+    document.getElementById('rhEmail').value = rhNome.toLowerCase().replace(/\s+/g,'.')+'.rh@empresa'+uid+'.co.ao';
+    document.getElementById('rhTelemovel').value = '+244 924 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,3)+' '+String(Math.floor(Math.random()*9000+1000));
+
+    // Visual feedback
+    const btn = document.getElementById('btnAutoFill');
+    btn.textContent = '✅ Preenchido!';
+    setTimeout(() => { btn.textContent = '⚡ Auto-Preencher (Teste)'; }, 2000);
+}
+</script>
 </body>
 </html>

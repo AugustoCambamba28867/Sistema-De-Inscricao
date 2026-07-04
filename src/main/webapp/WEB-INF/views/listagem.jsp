@@ -29,6 +29,7 @@
 <nav class="nav-bar">
     <a href="${pageContext.request.contextPath}/dashboard">📊 Dashboard</a>
     <a href="${pageContext.request.contextPath}/listagem" class="activo">📋 Inscrições</a>
+    <a href="${pageContext.request.contextPath}/relatorios">📑 Relatórios</a>
     <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
         <a href="${pageContext.request.contextPath}/utilizadores">👥 Utilizadores</a>
     </c:if>
