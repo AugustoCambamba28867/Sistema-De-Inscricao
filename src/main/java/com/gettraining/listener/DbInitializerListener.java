@@ -114,6 +114,23 @@ public class DbInitializerListener implements ServletContextListener {
                     )
                 """);
 
+                // Tabela Administrador
+                stmt.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS administrador (
+                        id       SERIAL PRIMARY KEY,
+                        username VARCHAR(50) UNIQUE NOT NULL,
+                        password VARCHAR(255) NOT NULL
+                    )
+                """);
+                
+                // Inserir Admin default (username: admin, password: admin -> hash SHA-256)
+                // hash de 'admin' = 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+                stmt.executeUpdate("""
+                    INSERT INTO administrador (username, password)
+                    SELECT 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918'
+                    WHERE NOT EXISTS (SELECT 1 FROM administrador WHERE username = 'admin')
+                """);
+
                 System.out.println("[DB Initializer] Estrutura de Tabelas verificada com sucesso!");
             }
 

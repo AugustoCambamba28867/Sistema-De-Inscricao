@@ -206,6 +206,81 @@ public class InscricaoDAO {
         }
     }
 
+    public void atualizar(Inscricao inscricao) throws SQLException {
+        Connection conn = null;
+        try {
+            conn = ConexaoBD.getConexao();
+            conn.setAutoCommit(false);
+            
+            // 1. Update Formando
+            String sqlFormando = "UPDATE formando SET nome=?, morada=?, localidade=?, municipio=?, telefone=?, telemovel=?, email=?, data_nascimento=?, sexo=? WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlFormando)) {
+                Formando f = inscricao.getFormando();
+                ps.setString(1, f.getNome());
+                ps.setString(2, f.getMorada());
+                ps.setString(3, f.getLocalidade());
+                ps.setString(4, f.getMunicipio());
+                ps.setString(5, f.getTelefone());
+                ps.setString(6, f.getTelemovel());
+                ps.setString(7, f.getEmail());
+                if (f.getDataNascimento() != null) ps.setDate(8, Date.valueOf(f.getDataNascimento()));
+                else ps.setNull(8, Types.DATE);
+                ps.setString(9, f.getSexo());
+                ps.setInt(10, f.getId());
+                ps.executeUpdate();
+            }
+            
+            // 2. Update Curso
+            String sqlCurso = "UPDATE curso SET nome=?, horario=? WHERE id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlCurso)) {
+                ps.setString(1, inscricao.getCurso().getNome());
+                ps.setString(2, inscricao.getCurso().getHorario());
+                ps.setInt(3, inscricao.getFormando().getCursoId());
+                ps.executeUpdate();
+            }
+            
+            // 3. Update Entidade
+            String sqlEntidade = "UPDATE entidade_pagadora SET nome=?, morada=?, localidade=?, municipio=?, telefone=?, telemovel=?, fax=?, email=?, nif=? WHERE formando_id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlEntidade)) {
+                EntidadePagadora e = inscricao.getEntidade();
+                if (e != null) {
+                    ps.setString(1, e.getNome());
+                    ps.setString(2, e.getMorada());
+                    ps.setString(3, e.getLocalidade());
+                    ps.setString(4, e.getMunicipio());
+                    ps.setString(5, e.getTelefone());
+                    ps.setString(6, e.getTelemovel());
+                    ps.setString(7, e.getFax());
+                    ps.setString(8, e.getEmail());
+                    ps.setString(9, e.getNif());
+                    ps.setInt(10, inscricao.getFormando().getId());
+                    ps.executeUpdate();
+                }
+            }
+            
+            // 4. Update RH
+            String sqlRH = "UPDATE responsavel_rh SET nome=?, telefone=?, telemovel=?, email=? WHERE formando_id=?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlRH)) {
+                ResponsavelRH rh = inscricao.getResponsavelRH();
+                if (rh != null) {
+                    ps.setString(1, rh.getNome());
+                    ps.setString(2, rh.getTelefone());
+                    ps.setString(3, rh.getTelemovel());
+                    ps.setString(4, rh.getEmail());
+                    ps.setInt(5, inscricao.getFormando().getId());
+                    ps.executeUpdate();
+                }
+            }
+            
+            conn.commit();
+        } catch (SQLException e) {
+            if (conn != null) conn.rollback();
+            throw e;
+        } finally {
+            if (conn != null) { conn.setAutoCommit(true); conn.close(); }
+        }
+    }
+
     private void executar(Connection conn, String sql, int param) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, param);
