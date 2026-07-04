@@ -9,7 +9,7 @@ import java.io.IOException;
  * Controlador - Página Inicial
  * Redireciona para o formulário de inscrição
  */
-@WebServlet(name = "IndexServlet", urlPatterns = {"/", "/index"})
+@WebServlet(name = "IndexServlet", urlPatterns = {"/index"})
 public class IndexServlet extends HttpServlet {
 
     @Override
