@@ -7,6 +7,25 @@
 
     <display-name>GET Training - Sistema de Inscrições</display-name>
 
+    <!-- Página de boas-vindas -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Filtro de codificação UTF-8 para todos os requests -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>com.gettraining.filter.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- Página de erro 404 -->
     <error-page>
         <error-code>404</error-code>
@@ -18,20 +37,5 @@
         <error-code>500</error-code>
         <location>/WEB-INF/views/erro.jsp</location>
     </error-page>
-
-    <!-- Página de boas-vindas -->
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
-
-    <!-- Codificação UTF-8 para todos os requests -->
-    <filter>
-        <filter-name>CharacterEncodingFilter</filter-name>
-        <filter-class>jakarta.servlet.http.HttpFilter</filter-class>
-        <init-param>
-            <param-name>encoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-    </filter>
 
 </web-app>
