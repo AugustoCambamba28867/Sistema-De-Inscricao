@@ -5,54 +5,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Administrativo – GET Training</title>
+    <title>Login – GET Training Academy</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <style>
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-        }
-    </style>
 </head>
 <body>
 
-<header class="cabecalho">
-    <div class="logo-bloco">
-        <div class="logo-icone">▮</div>
-        <div class="logo-texto">
+<div class="login-wrap">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="logo-icone" style="background:linear-gradient(135deg,#E53935 0%,#B71C1C 100%);box-shadow:0 4px 12px rgba(229,57,53,.4);">▮</div>
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Academy Center</div>
+            <p>Painel de Controlo Administrativo</p>
         </div>
-    </div>
-</header>
 
-<main class="conteudo login-container">
-    <section class="card">
-        <h2 style="text-align:center; margin-bottom: 20px;">Painel de Controlo</h2>
-        
         <c:if test="${not empty erro}">
-            <div class="alerta alerta-erro" role="alert">
-                ${erro}
-            </div>
+            <div class="alerta alerta-erro">⚠ ${erro}</div>
         </c:if>
 
         <form action="${pageContext.request.contextPath}/login" method="post">
-            <div class="campo">
+            <div class="campo" style="margin-bottom:16px;">
                 <label for="username">Utilizador</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" placeholder="admin" required autocomplete="username">
             </div>
-            
-            <div class="campo">
+            <div class="campo" style="margin-bottom:28px;">
                 <label for="password">Palavra-passe</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
             </div>
-            
-            <div class="btn-grupo">
-                <button type="submit" class="btn btn-primario" style="width: 100%;">Entrar</button>
-            </div>
+            <button type="submit" class="btn btn-primario" style="width:100%;justify-content:center;padding:13px;">
+                Entrar no Sistema →
+            </button>
         </form>
-    </section>
-</main>
+
+        <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--cinzento);">
+            © 2026 GET Training Academy Center
+        </p>
+    </div>
+</div>
 
 </body>
 </html>

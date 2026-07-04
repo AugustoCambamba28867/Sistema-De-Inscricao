@@ -6,9 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Lista de todas as inscrições – GET Training Academy Center.">
-    <title>Listagem de Inscrições – GET Training Academy</title>
+    <title>Inscrições – GET Training Academy</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -17,18 +17,18 @@
         <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Painel Administrativo</div>
+            <div class="subtitulo">Management System</div>
         </div>
     </div>
     <div class="cabecalho-contatos">
-        <div>Olá, ${sessionScope.admin.username}</div>
-        <a href="${pageContext.request.contextPath}/logout" style="color: white;">Sair</a>
+        <div>Olá, <strong>${sessionScope.admin.username}</strong></div>
+        <a href="${pageContext.request.contextPath}/logout">⎋ Sair</a>
     </div>
 </header>
 
 <nav class="nav-bar">
-    <a href="${pageContext.request.contextPath}/dashboard" id="nav-dashboard">📊 Dashboard</a>
-    <a href="${pageContext.request.contextPath}/listagem" class="activo" id="nav-listagem">📋 Gerir Inscrições</a>
+    <a href="${pageContext.request.contextPath}/dashboard">📊 Dashboard</a>
+    <a href="${pageContext.request.contextPath}/listagem" class="activo">📋 Inscrições</a>
     <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
         <a href="${pageContext.request.contextPath}/utilizadores">👥 Utilizadores</a>
     </c:if>
@@ -36,35 +36,61 @@
 
 <main class="conteudo">
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
-        <h1 style="font-size:24px; font-weight:700; color:#333;">
-            📋 Inscrições Registadas
-        </h1>
+    <div class="page-header">
+        <h1>Inscrições <span>· ${inscricoes.size()} resultado(s)</span></h1>
     </div>
 
-    <%-- Feedback ao eliminar ou atualizar --%>
+    <%-- ======= Feedback ======= --%>
     <c:if test="${not empty param.eliminado}">
-        <div class="alerta alerta-sucesso" id="msgEliminado">
-            ✔ Inscrição #${param.eliminado} eliminada com sucesso.
-        </div>
+        <div class="alerta alerta-sucesso">✔ Inscrição #${param.eliminado} eliminada com sucesso.</div>
     </c:if>
     <c:if test="${not empty param.sucesso}">
-        <div class="alerta alerta-sucesso" id="msgAtualizado">
-            ✔ Inscrição atualizada com sucesso.
-        </div>
+        <div class="alerta alerta-sucesso">✔ Inscrição atualizada com sucesso.</div>
     </c:if>
 
+    <%-- ======= Filtros ======= --%>
+    <form method="get" action="${pageContext.request.contextPath}/listagem" id="filtroForm">
+        <div class="filtro-bar">
+            <div class="campo" style="min-width:180px;">
+                <label style="font-size:12px;font-weight:600;color:var(--cinzento);text-transform:uppercase;letter-spacing:.5px;">Filtrar por Curso</label>
+                <select name="curso" id="filtroCurso">
+                    <option value="">— Todos os Cursos —</option>
+                    <c:forEach var="c" items="${cursos}">
+                        <option value="${c}" ${c == cursoFiltro ? 'selected' : ''}>${c}</option>
+                    </c:forEach>
+                </select>
+            </div>
+            <div class="campo" style="min-width:140px;">
+                <label style="font-size:12px;font-weight:600;color:var(--cinzento);text-transform:uppercase;letter-spacing:.5px;">Ordenar por</label>
+                <select name="ordenar" id="filtroOrdenar">
+                    <option value="">Data (mais recente)</option>
+                    <option value="nome"  ${ordenarPor == 'nome'  ? 'selected' : ''}>Nome A-Z</option>
+                    <option value="curso" ${ordenarPor == 'curso' ? 'selected' : ''}>Curso A-Z</option>
+                </select>
+            </div>
+            <div class="campo" style="min-width:120px;">
+                <label style="font-size:12px;font-weight:600;color:var(--cinzento);text-transform:uppercase;letter-spacing:.5px;">Mostrar Top N</label>
+                <input type="number" name="topN" id="filtroTopN" min="1" max="999" placeholder="Ex: 5 ou 10"
+                       value="${not empty topNParam ? topNParam : ''}">
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-end;">
+                <button type="submit" class="btn btn-primario">🔍 Filtrar</button>
+                <a href="${pageContext.request.contextPath}/listagem" class="btn btn-secundario">↺ Limpar</a>
+            </div>
+        </div>
+    </form>
+
+    <%-- ======= Tabela ======= --%>
     <div class="card">
         <c:choose>
             <c:when test="${empty inscricoes}">
-                <div class="alerta alerta-info" style="text-align:center; padding:40px;">
-                    <p style="font-size:18px;">📭 Ainda não existem inscrições registadas.</p>
+                <div class="alerta alerta-info" style="text-align:center;padding:40px;">
+                    <p style="font-size:17px;">📭 Nenhuma inscrição encontrada com os filtros actuais.</p>
+                    <br>
+                    <a href="${pageContext.request.contextPath}/listagem" class="btn btn-secundario">↺ Ver todos</a>
                 </div>
             </c:when>
             <c:otherwise>
-                <p style="font-size:14px; color:#757575; margin-bottom:16px;">
-                    Total: <strong>${inscricoes.size()}</strong> inscrição(ões)
-                </p>
                 <div class="tabela-container">
                     <table id="tabelaInscricoes">
                         <thead>
@@ -78,42 +104,38 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <c:set var="rank" value="0"/>
                             <c:forEach var="ins" items="${inscricoes}">
+                                <c:set var="rank" value="${rank + 1}"/>
                                 <tr>
-                                    <td><strong>${ins.id}</strong></td>
-                                    <td>${ins.formando.nome}</td>
-                                    <td style="color:#757575;">${ins.formando.email}</td>
-                                    <td>${ins.curso.nome}</td>
                                     <td>
-                                        <span class="badge-horario">${ins.curso.horario}</span>
+                                        <c:choose>
+                                            <c:when test="${not empty topNParam && rank == 1}"><span class="rank-badge gold">🥇</span></c:when>
+                                            <c:when test="${not empty topNParam && rank == 2}"><span class="rank-badge silver">🥈</span></c:when>
+                                            <c:when test="${not empty topNParam && rank == 3}"><span class="rank-badge bronze">🥉</span></c:when>
+                                            <c:otherwise><strong style="color:var(--cinzento);">${ins.id}</strong></c:otherwise>
+                                        </c:choose>
                                     </td>
                                     <td>
-                                        <div style="display:flex; gap:8px;">
+                                        <div style="font-weight:600;color:var(--cinzento-dk);">${ins.formando.nome}</div>
+                                    </td>
+                                    <td><span style="color:var(--cinzento);font-size:13px;">${ins.formando.email}</span></td>
+                                    <td><strong>${ins.curso.nome}</strong></td>
+                                    <td><span class="badge-horario">${ins.curso.horario}</span></td>
+                                    <td>
+                                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
                                             <a href="${pageContext.request.contextPath}/listagem?id=${ins.id}"
-                                               class="btn btn-secundario"
-                                               style="padding:6px 14px; font-size:12px;"
-                                               id="btnDetalhe${ins.id}">
-                                                🔍 Ver
-                                            </a>
+                                               class="btn btn-info" id="btnDetalhe${ins.id}">🔍 Ver</a>
                                             <c:if test="${sessionScope.admin.papel != 'LEITOR'}">
                                                 <a href="${pageContext.request.contextPath}/editar?id=${ins.id}"
-                                                   class="btn btn-primario"
-                                                   style="padding:6px 14px; font-size:12px;"
-                                                   id="btnEditar${ins.id}">
-                                                    ✏️ Editar
-                                                </a>
+                                                   class="btn btn-secundario" style="padding:7px 14px;font-size:12.5px;" id="btnEditar${ins.id}">✏️ Editar</a>
                                             </c:if>
                                             <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
-                                                <form method="post"
-                                                      action="${pageContext.request.contextPath}/listagem"
-                                                      onsubmit="return confirm('Eliminar inscrição #${ins.id}?')"
-                                                      style="display:inline;">
+                                                <form method="post" action="${pageContext.request.contextPath}/listagem"
+                                                      onsubmit="return confirm('Eliminar inscrição #${ins.id}?')" style="display:inline;">
                                                     <input type="hidden" name="action" value="eliminar">
                                                     <input type="hidden" name="id" value="${ins.id}">
-                                                    <button type="submit" class="btn btn-perigo"
-                                                            id="btnEliminar${ins.id}">
-                                                        🗑 Eliminar
-                                                    </button>
+                                                    <button type="submit" class="btn btn-perigo" id="btnEliminar${ins.id}">🗑 Eliminar</button>
                                                 </form>
                                             </c:if>
                                         </div>
@@ -127,11 +149,50 @@
         </c:choose>
     </div>
 
+    <%-- ======= Mini Chart por Curso Filtrado ======= --%>
+    <c:if test="${not empty inscricoes and empty cursoFiltro}">
+        <div class="card">
+            <span class="secao-titulo">📊 Distribuição da Listagem Actual</span>
+            <canvas id="chartListagem" height="120"></canvas>
+        </div>
+    </c:if>
+
 </main>
 
-<footer class="rodape">
-    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
-</footer>
+<script>
+    <c:if test="${not empty inscricoes and empty cursoFiltro}">
+    // Agrupar inscrições por curso no lado do cliente
+    const rows = document.querySelectorAll('#tabelaInscricoes tbody tr');
+    const contagem = {};
+    rows.forEach(r => {
+        const curso = r.cells[3].textContent.trim();
+        contagem[curso] = (contagem[curso] || 0) + 1;
+    });
+    const labels = Object.keys(contagem);
+    const data   = Object.values(contagem);
+    const colors = ['#E53935','#3B82F6','#059669','#7C3AED','#EA580C','#D97706','#0891B2','#DB2777'];
 
+    if (labels.length > 0) {
+        new Chart(document.getElementById('chartListagem'), {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Inscrições',
+                    data,
+                    backgroundColor: colors,
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                plugins: { legend:{display:false}, tooltip:{ backgroundColor:'rgba(15,23,42,0.9)', padding:12, cornerRadius:8 } },
+                scales: { y:{ beginAtZero:true, grid:{color:'#f1f5f9'}, ticks:{stepSize:1} }, x:{grid:{display:false}} },
+                animation: { duration: 800 }
+            }
+        });
+    }
+    </c:if>
+</script>
 </body>
 </html>

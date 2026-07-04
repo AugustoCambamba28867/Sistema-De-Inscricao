@@ -19,8 +19,10 @@
         </div>
     </div>
     <div class="cabecalho-contatos">
-        <div>Olá, ${sessionScope.admin.username} (${sessionScope.admin.papel})</div>
-        <a href="${pageContext.request.contextPath}/logout" style="color: white;">Sair</a>
+        <div>Olá, <strong>${sessionScope.admin.username}</strong>
+            <span class="badge-papel ${sessionScope.admin.papel}" style="margin-left:8px;">${sessionScope.admin.papel}</span>
+        </div>
+        <a href="${pageContext.request.contextPath}/logout">⎋ Sair</a>
     </div>
 </header>
 
@@ -83,7 +85,7 @@
                         <tr>
                             <td>${u.id}</td>
                             <td>${u.username}</td>
-                            <td><strong>${u.papel}</strong></td>
+                            <td><span class="badge-papel ${u.papel}">${u.papel}</span></td>
                             <td>
                                 <c:if test="${u.id != sessionScope.admin.id}">
                                     <form method="post" action="${pageContext.request.contextPath}/utilizadores" onsubmit="return confirm('Eliminar ${u.username}?')">
