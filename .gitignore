@@ -1,31 +1,37 @@
-# Maven
+# Maven build output
 target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-release.properties
 
-# NetBeans IDE
+# NetBeans generated files (pasta do projeto legado)
+sdpfrequencia/build/
+sdpfrequencia/dist/
+
+# Ficheiros de dados do projeto legado
+sdpfrequencia/dados.dat
+
+# NetBeans private settings (specific to each developer's machine)
 nbproject/private/
-build/
-dist/
-nbactions.xml.bak
+.nb-gradle/
 
-# IntelliJ / VS Code
-.idea/
+# IDE
 *.iml
-.vscode/
+.idea/
+*.iws
+*.ipr
 
-# OS
+# OS files
 .DS_Store
 Thumbs.db
 
-# Java
-*.class
-*.jar
-*.war
-*.ear
+# Logs
 *.log
 
-# PostgreSQL data (nunca versionar dados locais)
-*.dat
+# Class files
+*.class
+
+# WAR/JAR files (gerados pelo Maven)
+*.war
+*.jar
+*.ear
+
+# Environment-specific files
+*.env

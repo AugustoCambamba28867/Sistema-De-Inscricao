@@ -9,7 +9,7 @@
             <goal>package</goal>
         </goals>
         <properties>
-            <skipTests>true</skipTests>
+            <netbeans.deploy.clientUrlPart>sdpfrequencia</netbeans.deploy.clientUrlPart>
         </properties>
     </action>
     <action>
@@ -21,8 +21,19 @@
             <goal>package</goal>
         </goals>
         <properties>
-            <skipTests>true</skipTests>
-            <jpda.listen>maven</jpda.listen>
+            <netbeans.deploy.clientUrlPart>sdpfrequencia</netbeans.deploy.clientUrlPart>
+        </properties>
+    </action>
+    <action>
+        <actionName>profile</actionName>
+        <packagings>
+            <packaging>war</packaging>
+        </packagings>
+        <goals>
+            <goal>package</goal>
+        </goals>
+        <properties>
+            <netbeans.deploy.clientUrlPart>sdpfrequencia</netbeans.deploy.clientUrlPart>
         </properties>
     </action>
 </actions>
