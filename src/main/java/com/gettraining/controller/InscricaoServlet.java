@@ -31,6 +31,13 @@ public class InscricaoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
+
+        HttpSession session = req.getSession(false);
+        if (session == null || session.getAttribute("admin") == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
+        }
+
         req.getRequestDispatcher("/WEB-INF/views/formulario.jsp").forward(req, resp);
     }
 

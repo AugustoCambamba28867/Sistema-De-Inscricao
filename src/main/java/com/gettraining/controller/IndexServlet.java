@@ -7,7 +7,7 @@ import java.io.IOException;
 
 /**
  * Controlador - Página Inicial
- * Redireciona para o formulário de inscrição
+ * Mostra a landing page pública com acesso ao login.
  */
 @WebServlet(name = "IndexServlet", urlPatterns = {"/index"})
 public class IndexServlet extends HttpServlet {
@@ -15,6 +15,6 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/inscricao");
+        req.getRequestDispatcher("/WEB-INF/views/landing.jsp").forward(req, resp);
     }
 }

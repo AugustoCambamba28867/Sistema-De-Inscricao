@@ -662,6 +662,141 @@ tbody td {
     margin-top: 4px;
 }
 
+/* ---- Landing Page ---- */
+.landing-body {
+    background: linear-gradient(135deg, #0F172A 0%, #111827 45%, #1E293B 100%);
+    color: var(--branco);
+}
+
+.landing-shell {
+    min-height: 100vh;
+    padding: 24px 24px 40px;
+}
+
+.landing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1180px;
+    margin: 0 auto 40px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.hero {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 24px;
+    align-items: center;
+}
+
+.hero-copy {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 28px;
+    padding: 42px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.25);
+}
+
+.hero-badge {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(229,57,53,0.16);
+    color: #FECACA;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 3.2vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 16px;
+    color: var(--branco);
+}
+
+.hero p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 22px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.hero-note {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.95rem;
+}
+
+.feature-list {
+    list-style: none;
+    display: grid;
+    gap: 10px;
+    color: rgba(255,255,255,0.9);
+}
+
+.hero-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 28px;
+    padding: 32px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+}
+
+.hero-card-header {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 16px;
+}
+
+.hero-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.hero-metrics div {
+    background: rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.hero-metrics strong {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--branco);
+}
+
+.hero-metrics span {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.9rem;
+}
+
+.hero-card p {
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+}
+
 /* ---- Página de Sucesso ---- */
 .sucesso-icone {
     width: 80px;

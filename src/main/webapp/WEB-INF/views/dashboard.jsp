@@ -28,6 +28,7 @@
 
 <nav class="nav-bar">
     <a href="${pageContext.request.contextPath}/dashboard" class="activo">📊 Dashboard</a>
+    <a href="${pageContext.request.contextPath}/inscricao">📝 Nova Inscrição</a>
     <a href="${pageContext.request.contextPath}/listagem">📋 Inscrições</a>
     <a href="${pageContext.request.contextPath}/relatorios">📑 Relatórios</a>
     <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
