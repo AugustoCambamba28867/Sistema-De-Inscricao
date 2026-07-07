@@ -15,7 +15,7 @@
         <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Painel Administrativo</div>
+            <div class="subtitulo">Painel administrativo</div>
         </div>
     </div>
     <div class="cabecalho-contatos">
@@ -33,7 +33,7 @@
 </nav>
 
 <main class="conteudo">
-    <h1 style="font-size:24px; font-weight:700; color:#333; margin-bottom:24px;">Gestão de Administradores</h1>
+    <h1 style="font-size:24px; font-weight:700; color:#333; margin-bottom:24px;">Gestão de administradores</h1>
 
     <c:if test="${param.sucesso == 'adicionado'}">
         <div class="alerta alerta-sucesso">✔ Utilizador adicionado com sucesso.</div>
@@ -43,7 +43,7 @@
     </c:if>
 
     <div class="card" style="margin-bottom: 24px;">
-        <span class="secao-titulo">Adicionar Novo Utilizador</span>
+        <span class="secao-titulo">Adicionar novo utilizador</span>
         <form action="${pageContext.request.contextPath}/utilizadores" method="post">
             <input type="hidden" name="action" value="adicionar">
             <div class="form-linha col-3">

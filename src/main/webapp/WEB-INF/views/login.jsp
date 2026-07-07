@@ -15,7 +15,7 @@
         <div class="login-logo">
             <div class="logo-icone" style="background:linear-gradient(135deg,#E53935 0%,#B71C1C 100%);box-shadow:0 4px 12px rgba(229,57,53,.4);">▮</div>
             <div class="marca">GET <span>Training</span></div>
-            <p>Painel de Controlo Administrativo</p>
+            <p>Painel de controlo administrativo</p>
         </div>
 
         <c:if test="${not empty erro}">

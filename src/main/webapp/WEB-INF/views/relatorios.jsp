@@ -31,7 +31,7 @@
         <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Management System</div>
+            <div class="subtitulo">Sistema de Gestão</div>
         </div>
     </div>
     <div class="cabecalho-contatos">
@@ -52,7 +52,7 @@
 <main class="conteudo">
 
     <div class="page-header">
-        <h1>Relatórios <span>· Consultas Dinâmicas</span></h1>
+        <h1>Relatórios <span>· Consultas dinâmicas</span></h1>
     </div>
 
     <%-- ======= KPI Cards ======= --%>

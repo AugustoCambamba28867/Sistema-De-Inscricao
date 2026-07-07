@@ -17,7 +17,7 @@
         <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Management System</div>
+            <div class="subtitulo">Sistema de Gestão</div>
         </div>
     </div>
     <div class="cabecalho-contatos">

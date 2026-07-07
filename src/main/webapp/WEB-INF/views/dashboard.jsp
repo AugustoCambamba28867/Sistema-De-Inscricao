@@ -17,7 +17,7 @@
         <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
-            <div class="subtitulo">Management System</div>
+            <div class="subtitulo">Sistema de Gestão</div>
         </div>
     </div>
     <div class="cabecalho-contatos">
@@ -39,7 +39,7 @@
 <main class="conteudo">
 
     <div class="page-header">
-        <h1>Dashboard <span>· Visão Geral</span></h1>
+        <h1>Dashboard <span>· Visão geral</span></h1>
     </div>
 
     <%-- ======== KPI Cards ======== --%>
@@ -99,7 +99,7 @@
 
     <%-- ======== Top Cursos Table ======== --%>
     <div class="card">
-        <span class="secao-titulo">🏆 Top Cursos Mais Procurados</span>
+        <span class="secao-titulo">🏆 Top cursos mais procurados</span>
         <div class="tabela-container">
             <table>
                 <thead>
