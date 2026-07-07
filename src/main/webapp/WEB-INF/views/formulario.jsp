@@ -5,16 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ficha de InscriÃ§Ã£o GET Training Academy Center â€“ Registe-se num curso de formaÃ§Ã£o profissional.">
-    <title>Ficha de InscriÃ§Ã£o â€“ GET Training Academy</title>
+    <meta name="description" content="Ficha de inscrição GET Training Academy Center – Registe-se num curso de formação profissional.">
+    <title>Ficha de inscrição – GET Training Academy</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 
-<!-- ===== CABEÃ‡ALHO ===== -->
+<!-- ===== CABEÇALHO ===== -->
 <header class="cabecalho">
     <div class="logo-bloco">
-        <div class="logo-icone">â–®</div>
+        <div class="logo-icone">▮</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
             <div class="subtitulo">Academy Center</div>
@@ -26,21 +26,21 @@
     </div>
 </header>
 
-<!-- ===== NAVEGAÃ‡ÃƒO ===== -->
+<!-- ===== NAVEGAÇÃO ===== -->
 <nav class="nav-bar">
-    <a href="${pageContext.request.contextPath}/inscricao" class="activo" id="nav-inscricao">ðŸ“ Nova InscriÃ§Ã£o</a>
-    <a href="${pageContext.request.contextPath}/listagem" id="nav-listagem">ðŸ“‹ Listagem</a>
+    <a href="${pageContext.request.contextPath}/inscricao" class="activo" id="nav-inscricao">📝 Nova inscrição</a>
+    <a href="${pageContext.request.contextPath}/listagem" id="nav-listagem">📋 Listagem</a>
 </nav>
 
-<!-- ===== CONTEÃšDO ===== -->
+<!-- ===== CONTEÚDO ===== -->
 <main class="conteudo">
 
-    <h1 style="font-size:24px;font-weight:700;color:#333;margin-bottom:24px;">Ficha de InscriÃ§Ã£o</h1>
+    <h1 style="font-size:24px;font-weight:700;color:#333;margin-bottom:24px;">Ficha de inscrição</h1>
 
     <%-- Mensagens de erro vindas do servidor --%>
     <c:if test="${not empty erros}">
         <div class="alerta alerta-erro" role="alert" id="erroServidor">
-            <strong>âš  Por favor corrija os seguintes erros:</strong><br>
+            <strong>⚠ Por favor corrija os seguintes erros:</strong><br>
             ${erros}
         </div>
     </c:if>
@@ -48,7 +48,7 @@
     <form id="formInscricao" action="${pageContext.request.contextPath}/inscricao"
           method="post" novalidate>
 
-        <!-- ===== SECÃ‡ÃƒO: CURSO ===== -->
+        <!-- ===== SECÇÃO: CURSO ===== -->
         <section class="card" id="seccao-curso">
             <span class="secao-titulo">Curso</span>
 
@@ -56,18 +56,18 @@
                 <div class="campo">
                     <label for="curso">Nome do Curso <span class="obrig">*</span></label>
                     <input type="text" id="curso" name="curso" maxlength="150"
-                           placeholder="Ex: GestÃ£o de Recursos Humanos"
+                           placeholder="Ex: Gestão de Recursos Humanos"
                            value="<c:out value='${param.curso}'/>">
                 </div>
             </div>
 
             <div class="campo">
-                <label>HorÃ¡rio Preferencial <span class="obrig">*</span></label>
+                <label>Horário preferencial <span class="obrig">*</span></label>
                 <div class="radio-grupo" id="horarioDiv">
                     <label class="radio-opcao">
-                        <input type="radio" name="horario" value="ManhÃ£"
-                               <c:if test="${param.horario == 'ManhÃ£'}">checked</c:if>>
-                        ManhÃ£
+                        <input type="radio" name="horario" value="Manhã"
+                               <c:if test="${param.horario == 'Manhã'}">checked</c:if>>
+                        Manhã
                     </label>
                     <label class="radio-opcao">
                         <input type="radio" name="horario" value="Tarde"
@@ -80,15 +80,15 @@
                         Fim de Tarde
                     </label>
                     <label class="radio-opcao">
-                        <input type="radio" name="horario" value="SÃ¡bado"
-                               <c:if test="${param.horario == 'SÃ¡bado'}">checked</c:if>>
-                        SÃ¡bado
+                        <input type="radio" name="horario" value="Sábado"
+                               <c:if test="${param.horario == 'Sábado'}">checked</c:if>>
+                        Sábado
                     </label>
                 </div>
             </div>
         </section>
 
-        <!-- ===== SECÃ‡ÃƒO: DADOS DO FORMANDO ===== -->
+        <!-- ===== SECÇÃO: DADOS DO FORMANDO ===== -->
         <section class="card" id="seccao-formando">
             <span class="secao-titulo">Dados do Formando</span>
 
@@ -105,7 +105,7 @@
                 <div class="campo">
                     <label for="morada">Morada</label>
                     <input type="text" id="morada" name="morada" maxlength="200"
-                           placeholder="Rua, Bairro, NÃºmero"
+                           placeholder="Rua, bairro, número"
                            value="<c:out value='${param.morada}'/>">
                 </div>
             </div>
@@ -118,9 +118,9 @@
                            value="<c:out value='${param.localidade}'/>">
                 </div>
                 <div class="campo">
-                    <label for="municipio">MunicÃ­pio</label>
+                    <label for="municipio">Município</label>
                     <input type="text" id="municipio" name="municipio" maxlength="100"
-                           placeholder="MunicÃ­pio"
+                           placeholder="Município"
                            value="<c:out value='${param.municipio}'/>">
                 </div>
             </div>
@@ -133,7 +133,7 @@
                            value="<c:out value='${param.telefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="telemovel">TelemÃ³vel</label>
+                    <label for="telemovel">Telemóvel</label>
                     <input type="tel" id="telemovel" name="telemovel" maxlength="20"
                            placeholder="+244 9XX XXX XXX"
                            value="<c:out value='${param.telemovel}'/>">
@@ -171,7 +171,7 @@
             </div>
         </section>
 
-        <!-- ===== SECÃ‡ÃƒO: ENTIDADE PAGADORA ===== -->
+        <!-- ===== SECÇÃO: ENTIDADE PAGADORA ===== -->
         <section class="card" id="seccao-entidade">
             <span class="secao-titulo">Entidade Pagadora</span>
 
@@ -201,10 +201,10 @@
                            value="<c:out value='${param.epLocalidade}'/>">
                 </div>
                 <div class="campo">
-                    <label for="epMunicipio">MunicÃ­pio</label>
+                    <label for="epMunicipio">Município</label>
                     <input type="text" id="epMunicipio" name="epMunicipio" maxlength="100"
-                           placeholder="MunicÃ­pio"
-                           value="<c:out value='${param.epMunicipio}'/>">
+                           placeholder="Município"
+                           value="<c:out value='${param.epMunicipio}'/>
                 </div>
             </div>
 
@@ -216,7 +216,7 @@
                            value="<c:out value='${param.epTelefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="epTelemovel">TelemÃ³vel</label>
+                    <label for="epTelemovel">Telemóvel</label>
                     <input type="tel" id="epTelemovel" name="epTelemovel" maxlength="20"
                            placeholder="+244 ..."
                            value="<c:out value='${param.epTelemovel}'/>">
@@ -239,21 +239,21 @@
                 <div class="campo">
                     <label for="epNif">NIF</label>
                     <input type="text" id="epNif" name="epNif" maxlength="20"
-                           placeholder="NÃºmero de IdentificaÃ§Ã£o Fiscal"
+                           placeholder="Número de identificação fiscal"
                            value="<c:out value='${param.epNif}'/>">
                 </div>
             </div>
         </section>
 
-        <!-- ===== SECÃ‡ÃƒO: RESPONSÃVEL RH ===== -->
+        <!-- ===== SECÇÃO: RESPONSÁVEL RH ===== -->
         <section class="card" id="seccao-rh">
-            <span class="secao-titulo">ResponsÃ¡vel de RH</span>
+            <span class="secao-titulo">Responsável de RH</span>
 
             <div class="form-linha col-1">
                 <div class="campo">
                     <label for="rhNome">Nome</label>
                     <input type="text" id="rhNome" name="rhNome" maxlength="150"
-                           placeholder="Nome do ResponsÃ¡vel de RH"
+                           placeholder="Nome do responsável de RH"
                            value="<c:out value='${param.rhNome}'/>">
                 </div>
             </div>
@@ -266,7 +266,7 @@
                            value="<c:out value='${param.rhTelefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="rhTelemovel">TelemÃ³vel</label>
+                    <label for="rhTelemovel">Telemóvel</label>
                     <input type="tel" id="rhTelemovel" name="rhTelemovel" maxlength="20"
                            placeholder="+244 ..."
                            value="<c:out value='${param.rhTelemovel}'/>">
@@ -280,7 +280,7 @@
             </div>
         </section>
 
-        <!-- ===== BOTÃ•ES ===== -->
+        <!-- ===== BOTÕES ===== -->
         <div class="card">
             <div class="btn-grupo">
                 <button type="submit" class="btn btn-primario" id="btnGravar">
@@ -303,9 +303,9 @@
     </form>
 </main>
 
-<!-- ===== RODAPÃ‰ ===== -->
+<!-- ===== RODAPÉ ===== -->
 <footer class="rodape">
-    <p>&copy; 2026 GET Training Academy Center Â· geral@get-ao.com Â· www.get-ao.com</p>
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
 </footer>
 
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
