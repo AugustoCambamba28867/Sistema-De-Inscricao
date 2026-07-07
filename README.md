@@ -53,8 +53,18 @@ As tabelas já foram criadas com o script `bd_schema.sql`.
 | `http://localhost:8080/sdpfrequencia/inscricao` | Formulário de inscrição |
 | `http://localhost:8080/sdpfrequencia/listagem` | Lista de inscrições |
 | `http://localhost:8080/sdpfrequencia/listagem?id=1` | Detalhe da inscrição #1 |
+| `http://localhost:8080/sdpfrequencia/dbadmin` | Painel de administração de BD para SUPER_ADMIN |
 
 ---
+
+## Melhorias de segurança e administração adicionadas
+
+- Painel `dbadmin` para backup SQL e reset de dados de aplicação.
+- Auditoria de ações administrativas armazenada em `audit_log`.
+- Registro de eventos de login bem-sucedido e falhas de login.
+- Reset de dados preserva administradores e histórico de auditoria.
+- Acesso ao painel de DB restrito apenas a `SUPER_ADMIN`.
+- Formulários protegidos por CSRF token.
 
 ## Arquitectura 3 Camadas
 
