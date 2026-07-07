@@ -164,9 +164,14 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primario" style="font-size:15px;padding:12px 32px;">
-                🔍 Gerar Relatório
-            </button>
+            <div class="btn-grupo">
+                <button type="submit" class="btn btn-primario" style="font-size:15px;padding:12px 32px;">
+                    🔍 Gerar Relatório
+                </button>
+                <button type="submit" name="export" value="csv" class="btn btn-secundario" style="font-size:15px;padding:12px 32px;">
+                    ⬇ Baixar CSV
+                </button>
+            </div>
         </form>
     </div>
 

@@ -310,9 +310,29 @@
 
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
 <script>
-// Auto-preenchimento com dados de teste (para demos e provas)
-const nomesMasc = ['Augusto Cambamba','Carlos Manuel','João Pedro Silva','Miguel António','Fernando Costa','David Lopes','Rafael Neto','Domingos Kiala','Manuel Paulo','Nelson Chikoti'];
-const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria Luísa','Vanessa Gomes','Catarina Ferreira','Diana Alves','Rosa Kiala','Lúcia Pedro','Sónia Fernandes','Marta Joaquim'];
+// Auto-preenchimento com dados de teste (20 perfis: 13 rapazes e 7 mulheres)
+const perfisTeste = [
+    { nome: 'Augusto Cambamba', sexo: 'M' },
+    { nome: 'Carlos Manuel', sexo: 'M' },
+    { nome: 'João Pedro Silva', sexo: 'M' },
+    { nome: 'Miguel António', sexo: 'M' },
+    { nome: 'Fernando Costa', sexo: 'M' },
+    { nome: 'David Lopes', sexo: 'M' },
+    { nome: 'Rafael Neto', sexo: 'M' },
+    { nome: 'Domingos Kiala', sexo: 'M' },
+    { nome: 'Manuel Paulo', sexo: 'M' },
+    { nome: 'Nelson Chikoti', sexo: 'M' },
+    { nome: 'Elias Mendes', sexo: 'M' },
+    { nome: 'Hélder Nascimento', sexo: 'M' },
+    { nome: 'Paulo Tavares', sexo: 'M' },
+    { nome: 'Ana Maria Sousa', sexo: 'F' },
+    { nome: 'Beatriz Santos', sexo: 'F' },
+    { nome: 'Maria Luísa', sexo: 'F' },
+    { nome: 'Vanessa Gomes', sexo: 'F' },
+    { nome: 'Catarina Ferreira', sexo: 'F' },
+    { nome: 'Diana Alves', sexo: 'F' },
+    { nome: 'Sónia Fernandes', sexo: 'F' }
+];
 const cursos    = ['Gestão de Recursos Humanos','Contabilidade e Gestão','Marketing Digital','Informática e Programação','Logística e Supply Chain','Finanças Empresariais'];
 const horarios  = ['Manhã','Tarde','Fim de Tarde','Sábado'];
 const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga','Cazenga','Talatona','Kifangondo','Ingombota'];
@@ -330,9 +350,9 @@ function selecionarRadio(nome, valor) {
 }
 
 function preencherAutomatico() {
-    const isMasc = Math.random() > 0.45;
-    const nomes = isMasc ? nomesMasc : nomesFem;
-    const nome = nomes[Math.floor(Math.random() * nomes.length)];
+    const perfil = perfisTeste[Math.floor(Math.random() * perfisTeste.length)];
+    const isMasc = perfil.sexo === 'M';
+    const nome = perfil.nome;
     const curso = cursos[Math.floor(Math.random() * cursos.length)];
     const horario = horarios[Math.floor(Math.random() * horarios.length)];
     const mun = municipios[Math.floor(Math.random() * municipios.length)];
@@ -353,7 +373,7 @@ function preencherAutomatico() {
     const epFax = '+244 222 123 456';
     const epEmail = 'geral@empresa' + uid + '.co.ao';
     const epNif = String(Math.floor(Math.random() * 9000000000 + 1000000000));
-    const rhNome = isMasc ? nomesFem[Math.floor(Math.random() * nomesFem.length)] : nomesMasc[Math.floor(Math.random() * nomesMasc.length)];
+    const rhNome = perfisTeste[Math.floor(Math.random() * perfisTeste.length)].nome;
     const rhTelefone = '+244 222 111 222';
     const rhEmail = rhNome.toLowerCase().replace(/\s+/g, '.') + '.rh@empresa' + uid + '.co.ao';
     const rhTelemovel = '+244 924 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 3) + ' ' + String(Math.floor(Math.random() * 9000 + 1000));
