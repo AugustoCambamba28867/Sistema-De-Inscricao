@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
     <style>
-        .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 16px; }
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 16px; }
+        .modal-backdrop:not([hidden]) { display: flex; }
         .modal-card { background: #fff; border-radius: 16px; width: min(100%, 420px); padding: 24px; box-shadow: 0 20px 45px rgba(0,0,0,0.25); }
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
     </style>
