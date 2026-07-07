@@ -27,6 +27,11 @@
 <nav class="nav-bar">
     <a href="${pageContext.request.contextPath}/inscricao" id="nav-inscricao">📝 Nova Inscrição</a>
     <a href="${pageContext.request.contextPath}/listagem" id="nav-listagem">📋 Listagem</a>
+    <a href="${pageContext.request.contextPath}/relatorios" id="nav-relatorios">📑 Relatórios</a>
+    <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
+        <a href="${pageContext.request.contextPath}/utilizadores">👥 Utilizadores</a>
+        <a href="${pageContext.request.contextPath}/dbadmin">🛠️ Base de Dados</a>
+    </c:if>
 </nav>
 
 <main class="conteudo">

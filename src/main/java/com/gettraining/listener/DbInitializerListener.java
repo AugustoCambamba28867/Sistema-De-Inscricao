@@ -1,20 +1,25 @@
 package com.gettraining.listener;
 
+import com.gettraining.util.DbConfig;
+import com.gettraining.util.PasswordUtil;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 @WebListener
 public class DbInitializerListener implements ServletContextListener {
 
-    private static final String DEFAULT_DB_URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String APP_DB_URL = "jdbc:postgresql://localhost:5432/sdpfrequencia";
-    private static final String USER = "postgres";
-    private static final String PASS = "atac";
+    private static final String DEFAULT_DB_URL = DbConfig.DB_SUPERUSER_URL;
+    private static final String DEFAULT_DB_USER = DbConfig.DB_SUPERUSER_USER;
+    private static final String DEFAULT_DB_PASSWORD = DbConfig.DB_SUPERUSER_PASSWORD;
+    private static final String APP_DB_URL = DbConfig.DB_URL;
+    private static final String APP_DB_USER = DbConfig.DB_USER;
+    private static final String APP_DB_PASSWORD = DbConfig.DB_PASSWORD;
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
@@ -24,7 +29,7 @@ public class DbInitializerListener implements ServletContextListener {
 
             // 1. Verificar se a base de dados 'sdpfrequencia' existe
             boolean dbExists = false;
-            try (Connection conn = DriverManager.getConnection(DEFAULT_DB_URL, USER, PASS);
+            try (Connection conn = DriverManager.getConnection(DEFAULT_DB_URL, DEFAULT_DB_USER, DEFAULT_DB_PASSWORD);
                  Statement stmt = conn.createStatement()) {
                 
                 String checkDbSql = "SELECT 1 FROM pg_database WHERE datname = 'sdpfrequencia'";
@@ -45,7 +50,7 @@ public class DbInitializerListener implements ServletContextListener {
             }
 
             // 3. Conectar à base de dados da aplicação para criar as tabelas
-            try (Connection conn = DriverManager.getConnection(APP_DB_URL, USER, PASS);
+            try (Connection conn = DriverManager.getConnection(APP_DB_URL, APP_DB_USER, APP_DB_PASSWORD);
                  Statement stmt = conn.createStatement()) {
 
                 System.out.println("[DB Initializer] A verificar/criar tabelas do sistema...");
@@ -123,6 +128,19 @@ public class DbInitializerListener implements ServletContextListener {
                         papel    VARCHAR(50) DEFAULT 'GESTOR'
                     )
                 """);
+
+                // Tabela de auditoria de ações administrativas
+                stmt.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS audit_log (
+                        id         SERIAL PRIMARY KEY,
+                        admin_id   INT REFERENCES administrador(id) ON DELETE SET NULL,
+                        username   VARCHAR(50),
+                        action     VARCHAR(100) NOT NULL,
+                        details    TEXT,
+                        ip_address VARCHAR(50),
+                        created_at TIMESTAMP DEFAULT NOW()
+                    )
+                """);
                 
                 try {
                     stmt.executeUpdate("ALTER TABLE administrador ADD COLUMN IF NOT EXISTS papel VARCHAR(50) DEFAULT 'GESTOR'");
@@ -130,15 +148,32 @@ public class DbInitializerListener implements ServletContextListener {
                     // Ignora erro se a sintaxe IF NOT EXISTS não for suportada em versões muito antigas do PostgreSQL
                 }
                 
-                // Inserir Admin default (username: admin, password: admin -> hash SHA-256)
-                // hash de 'admin' = 8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
-                stmt.executeUpdate("""
-                    INSERT INTO administrador (username, password, papel)
-                    SELECT 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 'SUPER_ADMIN'
-                    WHERE NOT EXISTS (SELECT 1 FROM administrador WHERE username = 'admin')
-                """);
+                try {
+                    stmt.executeUpdate("ALTER TABLE audit_log ADD COLUMN IF NOT EXISTS username VARCHAR(50)");
+                } catch (Exception ignored) {
+                    // Não faz mal se a coluna já existir ou se a versão não suportar ALTER TABLE ... ADD COLUMN IF NOT EXISTS
+                }
                 
-                stmt.executeUpdate("UPDATE administrador SET papel = 'SUPER_ADMIN' WHERE username = 'admin'");
+                if (!DbConfig.ADMIN_PASSWORD.isBlank()) {
+                    String defaultAdminHash = PasswordUtil.hashPassword(DbConfig.ADMIN_PASSWORD);
+                    try (PreparedStatement ps = conn.prepareStatement("""
+                        INSERT INTO administrador (username, password, papel)
+                        SELECT ?, ?, 'SUPER_ADMIN'
+                        WHERE NOT EXISTS (SELECT 1 FROM administrador WHERE username = ?)
+                    """)) {
+                        ps.setString(1, DbConfig.ADMIN_USERNAME);
+                        ps.setString(2, defaultAdminHash);
+                        ps.setString(3, DbConfig.ADMIN_USERNAME);
+                        ps.executeUpdate();
+                    }
+                } else {
+                    System.out.println("[DB Initializer] Nenhum administrador predefinido criado porque DB_ADMIN_PASSWORD não está definido.");
+                }
+                
+                try (PreparedStatement ps = conn.prepareStatement("UPDATE administrador SET papel = 'SUPER_ADMIN' WHERE username = ?")) {
+                    ps.setString(1, DbConfig.ADMIN_USERNAME);
+                    ps.executeUpdate();
+                }
 
                 System.out.println("[DB Initializer] Estrutura de Tabelas verificada com sucesso!");
             }

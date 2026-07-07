@@ -1,6 +1,7 @@
 package com.gettraining.controller;
 
 import com.gettraining.dao.AdminDAO;
+import com.gettraining.dao.AuditDAO;
 import com.gettraining.model.Admin;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -42,11 +43,13 @@ public class GestaoUtilizadoresServlet extends HttpServlet {
         String action = req.getParameter("action");
         try {
             AdminDAO dao = new AdminDAO();
+            AuditDAO auditDAO = new AuditDAO();
             if ("adicionar".equals(action)) {
                 String username = req.getParameter("username");
                 String password = req.getParameter("password");
                 String papel = req.getParameter("papel");
                 dao.inserir(username, password, papel);
+                auditDAO.registrar(loggedAdmin, "USER_CREATE", "Criado utilizador '" + username + "' com papel='" + papel + "'.", req.getRemoteAddr());
                 resp.sendRedirect(req.getContextPath() + "/utilizadores?sucesso=adicionado");
             } else if ("eliminar".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
@@ -54,6 +57,7 @@ public class GestaoUtilizadoresServlet extends HttpServlet {
                     throw new Exception("Não podes eliminar o teu próprio utilizador!");
                 }
                 dao.eliminar(id);
+                auditDAO.registrar(loggedAdmin, "USER_DELETE", "Eliminado utilizador id='" + id + "'.", req.getRemoteAddr());
                 resp.sendRedirect(req.getContextPath() + "/utilizadores?sucesso=eliminado");
             } else {
                 resp.sendRedirect(req.getContextPath() + "/utilizadores");

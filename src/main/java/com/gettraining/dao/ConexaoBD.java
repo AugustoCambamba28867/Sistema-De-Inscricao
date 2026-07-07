@@ -1,5 +1,7 @@
 package com.gettraining.dao;
 
+import com.gettraining.util.DbConfig;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,11 +12,6 @@ import java.sql.SQLException;
  */
 public class ConexaoBD {
 
-    private static final String URL      = "jdbc:postgresql://localhost:5432/sdpfrequencia"; // PostgreSQL 18
-    private static final String USUARIO  = "postgres";
-    private static final String SENHA    = "atac";
-
-    // Carrega o driver JDBC do PostgreSQL
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -29,7 +26,7 @@ public class ConexaoBD {
      * @throws SQLException se a ligação falhar
      */
     public static Connection getConexao() throws SQLException {
-        return DriverManager.getConnection(URL, USUARIO, SENHA);
+        return DriverManager.getConnection(DbConfig.DB_URL, DbConfig.DB_USER, DbConfig.DB_PASSWORD);
     }
 
     /**

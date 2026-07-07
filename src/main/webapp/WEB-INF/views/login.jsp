@@ -23,6 +23,7 @@
         </c:if>
 
         <form action="${pageContext.request.contextPath}/login" method="post">
+            <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
             <div class="campo" style="margin-bottom:16px;">
                 <label for="username">Utilizador</label>
                 <input type="text" id="username" name="username" placeholder="admin" required autocomplete="username">

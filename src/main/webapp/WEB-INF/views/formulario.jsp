@@ -47,6 +47,7 @@
 
     <form id="formInscricao" action="${pageContext.request.contextPath}/inscricao"
           method="post" novalidate>
+        <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
 
         <!-- ===== SECÇÃO: CURSO ===== -->
         <section class="card" id="seccao-curso">

@@ -1,6 +1,7 @@
 package com.gettraining.controller;
 
 import com.gettraining.dao.AdminDAO;
+import com.gettraining.dao.AuditDAO;
 import com.gettraining.model.Admin;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -29,11 +30,36 @@ public class LoginServlet extends HttpServlet {
             AdminDAO dao = new AdminDAO();
             Admin admin = dao.autenticar(username, password);
             
+            AuditDAO auditDAO = new AuditDAO();
             if (admin != null) {
-                HttpSession session = req.getSession();
+                auditDAO.registrar(admin, "LOGIN_SUCCESS", "Login bem-sucedido.", req.getRemoteAddr());
+
+                HttpSession oldSession = req.getSession(false);
+                if (oldSession != null) {
+                    oldSession.invalidate();
+                }
+
+                HttpSession session = req.getSession(true);
+                session.setMaxInactiveInterval(20 * 60); // 20 minutos
                 session.setAttribute("admin", admin);
+
+                if (req.isSecure()) {
+                    Cookie[] cookies = req.getCookies();
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            if ("JSESSIONID".equals(cookie.getName())) {
+                                cookie.setHttpOnly(true);
+                                cookie.setSecure(true);
+                                cookie.setPath(req.getContextPath());
+                                resp.addCookie(cookie);
+                            }
+                        }
+                    }
+                }
+
                 resp.sendRedirect(req.getContextPath() + "/dashboard");
             } else {
+                auditDAO.registrar(null, username != null ? username : "UNKNOWN", "LOGIN_FAILED", "Tentativa de login inválida.", req.getRemoteAddr());
                 req.setAttribute("erro", "Credenciais inválidas.");
                 req.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(req, resp);
             }

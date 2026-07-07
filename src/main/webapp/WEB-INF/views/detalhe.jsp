@@ -145,6 +145,7 @@
             <form method="post" action="${pageContext.request.contextPath}/listagem"
                   class="delete-form" data-confirm-message="Tem a certeza que deseja eliminar esta inscrição?"
                   style="display:inline;">
+                <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
                 <input type="hidden" name="action" value="eliminar">
                 <input type="hidden" name="id" value="${inscricao.id}">
                 <button type="submit" class="btn btn-perigo" id="btnEliminarDetalhe">

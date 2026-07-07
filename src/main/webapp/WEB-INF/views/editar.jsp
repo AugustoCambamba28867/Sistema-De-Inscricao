@@ -39,6 +39,7 @@
     </c:if>
 
     <form id="formInscricao" action="${pageContext.request.contextPath}/editar" method="post" novalidate>
+        <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
         <input type="hidden" name="inscricaoId" value="${inscricao.id}">
 
         <!-- SECÇÃO: CURSO -->

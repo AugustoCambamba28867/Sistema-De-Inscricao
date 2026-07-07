@@ -36,6 +36,7 @@
     <a href="${pageContext.request.contextPath}/dashboard">📊 Dashboard</a>
     <a href="${pageContext.request.contextPath}/listagem">📋 Gerir Inscrições</a>
     <a href="${pageContext.request.contextPath}/utilizadores" class="activo">👥 Utilizadores</a>
+    <a href="${pageContext.request.contextPath}/dbadmin">🛠️ Base de Dados</a>
 </nav>
 
 <main class="conteudo">
@@ -51,6 +52,7 @@
     <div class="card" style="margin-bottom: 24px;">
         <span class="secao-titulo">Adicionar novo utilizador</span>
         <form action="${pageContext.request.contextPath}/utilizadores" method="post">
+            <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
             <input type="hidden" name="action" value="adicionar">
             <div class="form-linha col-3">
                 <div class="campo">
@@ -95,6 +97,7 @@
                             <td>
                                 <c:if test="${u.id != sessionScope.admin.id}">
                                     <form method="post" action="${pageContext.request.contextPath}/utilizadores" class="delete-form" data-confirm-message="Tem a certeza que deseja eliminar o utilizador ${u.username}?">
+                                        <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
                                         <input type="hidden" name="action" value="eliminar">
                                         <input type="hidden" name="id" value="${u.id}">
                                         <button type="submit" class="btn btn-perigo" style="padding:4px 8px; font-size:12px;">🗑 Eliminar</button>

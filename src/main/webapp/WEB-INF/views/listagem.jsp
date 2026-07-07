@@ -38,6 +38,7 @@
     <a href="${pageContext.request.contextPath}/relatorios">📑 Relatórios</a>
     <c:if test="${sessionScope.admin.papel == 'SUPER_ADMIN'}">
         <a href="${pageContext.request.contextPath}/utilizadores">👥 Utilizadores</a>
+        <a href="${pageContext.request.contextPath}/dbadmin">🛠️ Base de Dados</a>
     </c:if>
 </nav>
 
@@ -141,6 +142,7 @@
                                                 <form method="post" action="${pageContext.request.contextPath}/listagem"
                                                       class="delete-form" data-confirm-message="Tem a certeza que deseja eliminar esta inscrição?"
                                                       style="display:inline;">
+                                                    <jsp:include page="/WEB-INF/views/includes/csrfToken.jspf" />
                                                     <input type="hidden" name="action" value="eliminar">
                                                     <input type="hidden" name="id" value="${ins.id}">
                                                     <button type="submit" class="btn btn-perigo" id="btnEliminar${ins.id}">🗑 Eliminar</button>
