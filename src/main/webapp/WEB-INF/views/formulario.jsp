@@ -1,20 +1,20 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ficha de Inscrição GET Training Academy Center – Registe-se num curso de formação profissional.">
-    <title>Ficha de Inscrição – GET Training Academy</title>
+    <meta name="description" content="Ficha de InscriÃ§Ã£o GET Training Academy Center â€“ Registe-se num curso de formaÃ§Ã£o profissional.">
+    <title>Ficha de InscriÃ§Ã£o â€“ GET Training Academy</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
 
-<!-- ===== CABEÇALHO ===== -->
+<!-- ===== CABEÃ‡ALHO ===== -->
 <header class="cabecalho">
     <div class="logo-bloco">
-        <div class="logo-icone">▮</div>
+        <div class="logo-icone">â–®</div>
         <div class="logo-texto">
             <div class="marca">GET <span>Training</span></div>
             <div class="subtitulo">Academy Center</div>
@@ -26,21 +26,21 @@
     </div>
 </header>
 
-<!-- ===== NAVEGAÇÃO ===== -->
+<!-- ===== NAVEGAÃ‡ÃƒO ===== -->
 <nav class="nav-bar">
-    <a href="${pageContext.request.contextPath}/inscricao" class="activo" id="nav-inscricao">📝 Nova Inscrição</a>
-    <a href="${pageContext.request.contextPath}/listagem" id="nav-listagem">📋 Listagem</a>
+    <a href="${pageContext.request.contextPath}/inscricao" class="activo" id="nav-inscricao">ðŸ“ Nova InscriÃ§Ã£o</a>
+    <a href="${pageContext.request.contextPath}/listagem" id="nav-listagem">ðŸ“‹ Listagem</a>
 </nav>
 
-<!-- ===== CONTEÚDO ===== -->
+<!-- ===== CONTEÃšDO ===== -->
 <main class="conteudo">
 
-    <h1 style="font-size:24px;font-weight:700;color:#333;margin-bottom:24px;">Ficha de Inscrição</h1>
+    <h1 style="font-size:24px;font-weight:700;color:#333;margin-bottom:24px;">Ficha de InscriÃ§Ã£o</h1>
 
     <%-- Mensagens de erro vindas do servidor --%>
     <c:if test="${not empty erros}">
         <div class="alerta alerta-erro" role="alert" id="erroServidor">
-            <strong>⚠ Por favor corrija os seguintes erros:</strong><br>
+            <strong>âš  Por favor corrija os seguintes erros:</strong><br>
             ${erros}
         </div>
     </c:if>
@@ -48,7 +48,7 @@
     <form id="formInscricao" action="${pageContext.request.contextPath}/inscricao"
           method="post" novalidate>
 
-        <!-- ===== SECÇÃO: CURSO ===== -->
+        <!-- ===== SECÃ‡ÃƒO: CURSO ===== -->
         <section class="card" id="seccao-curso">
             <span class="secao-titulo">Curso</span>
 
@@ -56,18 +56,18 @@
                 <div class="campo">
                     <label for="curso">Nome do Curso <span class="obrig">*</span></label>
                     <input type="text" id="curso" name="curso" maxlength="150"
-                           placeholder="Ex: Gestão de Recursos Humanos"
+                           placeholder="Ex: GestÃ£o de Recursos Humanos"
                            value="<c:out value='${param.curso}'/>">
                 </div>
             </div>
 
             <div class="campo">
-                <label>Horário Preferencial <span class="obrig">*</span></label>
+                <label>HorÃ¡rio Preferencial <span class="obrig">*</span></label>
                 <div class="radio-grupo" id="horarioDiv">
                     <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Manhã"
-                               <c:if test="${param.horario == 'Manhã'}">checked</c:if>>
-                        Manhã
+                        <input type="radio" name="horario" value="ManhÃ£"
+                               <c:if test="${param.horario == 'ManhÃ£'}">checked</c:if>>
+                        ManhÃ£
                     </label>
                     <label class="radio-opcao">
                         <input type="radio" name="horario" value="Tarde"
@@ -80,15 +80,15 @@
                         Fim de Tarde
                     </label>
                     <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Sábado"
-                               <c:if test="${param.horario == 'Sábado'}">checked</c:if>>
-                        Sábado
+                        <input type="radio" name="horario" value="SÃ¡bado"
+                               <c:if test="${param.horario == 'SÃ¡bado'}">checked</c:if>>
+                        SÃ¡bado
                     </label>
                 </div>
             </div>
         </section>
 
-        <!-- ===== SECÇÃO: DADOS DO FORMANDO ===== -->
+        <!-- ===== SECÃ‡ÃƒO: DADOS DO FORMANDO ===== -->
         <section class="card" id="seccao-formando">
             <span class="secao-titulo">Dados do Formando</span>
 
@@ -105,7 +105,7 @@
                 <div class="campo">
                     <label for="morada">Morada</label>
                     <input type="text" id="morada" name="morada" maxlength="200"
-                           placeholder="Rua, Bairro, Número"
+                           placeholder="Rua, Bairro, NÃºmero"
                            value="<c:out value='${param.morada}'/>">
                 </div>
             </div>
@@ -118,9 +118,9 @@
                            value="<c:out value='${param.localidade}'/>">
                 </div>
                 <div class="campo">
-                    <label for="municipio">Município</label>
+                    <label for="municipio">MunicÃ­pio</label>
                     <input type="text" id="municipio" name="municipio" maxlength="100"
-                           placeholder="Município"
+                           placeholder="MunicÃ­pio"
                            value="<c:out value='${param.municipio}'/>">
                 </div>
             </div>
@@ -133,7 +133,7 @@
                            value="<c:out value='${param.telefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="telemovel">Telemóvel</label>
+                    <label for="telemovel">TelemÃ³vel</label>
                     <input type="tel" id="telemovel" name="telemovel" maxlength="20"
                            placeholder="+244 9XX XXX XXX"
                            value="<c:out value='${param.telemovel}'/>">
@@ -171,7 +171,7 @@
             </div>
         </section>
 
-        <!-- ===== SECÇÃO: ENTIDADE PAGADORA ===== -->
+        <!-- ===== SECÃ‡ÃƒO: ENTIDADE PAGADORA ===== -->
         <section class="card" id="seccao-entidade">
             <span class="secao-titulo">Entidade Pagadora</span>
 
@@ -201,9 +201,9 @@
                            value="<c:out value='${param.epLocalidade}'/>">
                 </div>
                 <div class="campo">
-                    <label for="epMunicipio">Município</label>
+                    <label for="epMunicipio">MunicÃ­pio</label>
                     <input type="text" id="epMunicipio" name="epMunicipio" maxlength="100"
-                           placeholder="Município"
+                           placeholder="MunicÃ­pio"
                            value="<c:out value='${param.epMunicipio}'/>">
                 </div>
             </div>
@@ -216,7 +216,7 @@
                            value="<c:out value='${param.epTelefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="epTelemovel">Telemóvel</label>
+                    <label for="epTelemovel">TelemÃ³vel</label>
                     <input type="tel" id="epTelemovel" name="epTelemovel" maxlength="20"
                            placeholder="+244 ..."
                            value="<c:out value='${param.epTelemovel}'/>">
@@ -239,21 +239,21 @@
                 <div class="campo">
                     <label for="epNif">NIF</label>
                     <input type="text" id="epNif" name="epNif" maxlength="20"
-                           placeholder="Número de Identificação Fiscal"
+                           placeholder="NÃºmero de IdentificaÃ§Ã£o Fiscal"
                            value="<c:out value='${param.epNif}'/>">
                 </div>
             </div>
         </section>
 
-        <!-- ===== SECÇÃO: RESPONSÁVEL RH ===== -->
+        <!-- ===== SECÃ‡ÃƒO: RESPONSÃVEL RH ===== -->
         <section class="card" id="seccao-rh">
-            <span class="secao-titulo">Responsável de RH</span>
+            <span class="secao-titulo">ResponsÃ¡vel de RH</span>
 
             <div class="form-linha col-1">
                 <div class="campo">
                     <label for="rhNome">Nome</label>
                     <input type="text" id="rhNome" name="rhNome" maxlength="150"
-                           placeholder="Nome do Responsável de RH"
+                           placeholder="Nome do ResponsÃ¡vel de RH"
                            value="<c:out value='${param.rhNome}'/>">
                 </div>
             </div>
@@ -266,7 +266,7 @@
                            value="<c:out value='${param.rhTelefone}'/>">
                 </div>
                 <div class="campo">
-                    <label for="rhTelemovel">Telemóvel</label>
+                    <label for="rhTelemovel">TelemÃ³vel</label>
                     <input type="tel" id="rhTelemovel" name="rhTelemovel" maxlength="20"
                            placeholder="+244 ..."
                            value="<c:out value='${param.rhTelemovel}'/>">
@@ -280,22 +280,22 @@
             </div>
         </section>
 
-        <!-- ===== BOTÕES ===== -->
+        <!-- ===== BOTÃ•ES ===== -->
         <div class="card">
             <div class="btn-grupo">
                 <button type="submit" class="btn btn-primario" id="btnGravar">
-                    💾 Gravar Inscrição
+                    ðŸ’¾ Gravar InscriÃ§Ã£o
                 </button>
                 <button type="button" onclick="preencherAutomatico()" class="btn" id="btnAutoFill"
                     style="background:linear-gradient(135deg,#059669 0%,#047857 100%);color:white;box-shadow:0 2px 8px rgba(5,150,105,.3);">
-                    ⚡ Auto-Preencher (Teste)
+                    âš¡ Auto-Preencher (Teste)
                 </button>
                 <button type="reset" class="btn btn-secundario" id="btnLimpar">
-                    🔄 Limpar
+                    ðŸ”„ Limpar
                 </button>
                 <a href="${pageContext.request.contextPath}/listagem"
                    class="btn btn-secundario" id="btnListagem">
-                    📋 Ver Inscrições
+                    ðŸ“‹ Ver InscriÃ§Ãµes
                 </a>
             </div>
         </div>
@@ -303,18 +303,18 @@
     </form>
 </main>
 
-<!-- ===== RODAPÉ ===== -->
+<!-- ===== RODAPÃ‰ ===== -->
 <footer class="rodape">
-    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+    <p>&copy; 2026 GET Training Academy Center Â· geral@get-ao.com Â· www.get-ao.com</p>
 </footer>
 
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
 <script>
 // Auto-preenchimento com dados de teste (para demos e provas)
-const nomesMasc = ['Augusto Cambamba','Carlos Manuel','João Pedro Silva','Miguel António','Fernando Costa','David Lopes','Rafael Neto'];
-const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria Luísa','Vanessa Gomes','Catarina Ferreira','Diana Alves'];
-const cursos    = ['Gestão de Recursos Humanos','Contabilidade e Gestão','Marketing Digital','Informática e Programação','Logística e Supply Chain','Finanças Empresariais'];
-const horarios  = ['Manhã','Tarde','Fim de Tarde','Sábado'];
+const nomesMasc = ['Augusto Cambamba','Carlos Manuel','JoÃ£o Pedro Silva','Miguel AntÃ³nio','Fernando Costa','David Lopes','Rafael Neto'];
+const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria LuÃ­sa','Vanessa Gomes','Catarina Ferreira','Diana Alves'];
+const cursos    = ['GestÃ£o de Recursos Humanos','Contabilidade e GestÃ£o','Marketing Digital','InformÃ¡tica e ProgramaÃ§Ã£o','LogÃ­stica e Supply Chain','FinanÃ§as Empresariais'];
+const horarios  = ['ManhÃ£','Tarde','Fim de Tarde','SÃ¡bado'];
 const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga'];
 
 function selecionarRadio(nome, valor) {
@@ -326,47 +326,76 @@ function selecionarRadio(nome, valor) {
 
 function preencherAutomatico() {
     const isMasc = Math.random() > 0.45;
-    const nomes  = isMasc ? nomesMasc : nomesFem;
-    const nome   = nomes[Math.floor(Math.random() * nomes.length)];
-    const curso  = cursos[Math.floor(Math.random() * cursos.length)];
-    const horario= horarios[Math.floor(Math.random() * horarios.length)];
-    const mun    = municipios[Math.floor(Math.random() * municipios.length)];
-    const uid    = Date.now();
+    const nomes = isMasc ? nomesMasc : nomesFem;
+    const nome = nomes[Math.floor(Math.random() * nomes.length)];
+    const curso = cursos[Math.floor(Math.random() * cursos.length)];
+    const horario = horarios[Math.floor(Math.random() * horarios.length)];
+    const mun = municipios[Math.floor(Math.random() * municipios.length)];
+    const uid = Date.now();
+    const morada = 'Rua ' + Math.floor(Math.random() * 200 + 1) + ', Bairro Central';
+    const telefone = '+244 222 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 3) + ' ' + String(Math.floor(Math.random() * 9000 + 1000));
+    const telemovel = '+244 9' + (isMasc ? '2' : '3') + String(Math.floor(Math.random() * 9000000 + 1000000));
+    const email = nome.toLowerCase().replace(/\s+/g, '.').replace(/[ãçéêíõú]/g, 'a') + uid + '@gmail.com';
+    const ano = 1990 + Math.floor(Math.random() * 20);
+    const mes = String(Math.floor(Math.random() * 12 + 1)).padStart(2, '0');
+    const dia = String(Math.floor(Math.random() * 28 + 1)).padStart(2, '0');
+    const dataNascimento = `${ano}-${mes}-${dia}`;
+    const epNome = 'Empresa ' + mun + ' Lda.';
+    const epMorada = 'Av. 1º Congresso, Nº ' + Math.floor(Math.random() * 500 + 1);
+    const epTelefone = '+244 222 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 6);
+    const epEmail = 'geral@empresa' + uid + '.co.ao';
+    const epNif = String(Math.floor(Math.random() * 9000000000 + 1000000000));
+    const rhNome = isMasc ? nomesFem[Math.floor(Math.random() * nomesFem.length)] : nomesMasc[Math.floor(Math.random() * nomesMasc.length)];
+    const rhEmail = rhNome.toLowerCase().replace(/\s+/g, '.') + '.rh@empresa' + uid + '.co.ao';
+    const rhTelemovel = '+244 924 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 3) + ' ' + String(Math.floor(Math.random() * 9000 + 1000));
 
-    // Curso
-    document.getElementById('curso').value = curso;
-    selecionarRadio('horario', horario);
+    const valoresPorCampo = {
+        curso,
+        horario,
+        nome,
+        morada,
+        localidade: mun,
+        municipio: mun,
+        telefone,
+        telemovel,
+        email,
+        dataNascimento,
+        sexo: isMasc ? 'M' : 'F',
+        epNome,
+        epMorada,
+        epLocalidade: mun,
+        epMunicipio: mun,
+        epTelefone,
+        epTelemovel: telemovel,
+        epFax: '+244 222 123 456',
+        epEmail,
+        epNif,
+        rhNome,
+        rhTelefone: '+244 222 111 222',
+        rhTelemovel,
+        rhEmail
+    };
 
-    // Formando
-    document.getElementById('nome').value = nome;
-    document.getElementById('morada').value = 'Rua ' + Math.floor(Math.random()*200+1) + ', Bairro Central';
-    document.getElementById('localidade').value = mun;
-    document.getElementById('municipio').value = mun;
-    document.getElementById('telefone').value = '+244 222 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,3) + ' ' + String(Math.floor(Math.random()*9000+1000));
-    document.getElementById('telemovel').value = '+244 9' + (isMasc ? '2' : '3') + String(Math.floor(Math.random()*9000000+1000000));
-    document.getElementById('email').value = nome.toLowerCase().replace(/\s+/g,'.').replace(/[\u00e3\u00e7\u00e9\u00ea\u00ed\u00f5\u00fa]/g,'a') + uid + '@gmail.com';
-    const ano = 1990 + Math.floor(Math.random()*20);
-    const mes = String(Math.floor(Math.random()*12+1)).padStart(2,'0');
-    const dia = String(Math.floor(Math.random()*28+1)).padStart(2,'0');
-    document.getElementById('dataNascimento').value = `${ano}-${mes}-${dia}`;
-    selecionarRadio('sexo', isMasc ? 'M' : 'F');
+    const form = document.getElementById('formInscricao');
+    if (!form) return;
 
-    // Entidade Pagadora
-    document.getElementById('epNome').value = 'Empresa ' + mun + ' Lda.';
-    document.getElementById('epMorada').value = 'Av. 1º Congresso, Nº ' + Math.floor(Math.random()*500+1);
-    document.getElementById('epLocalidade').value = mun;
-    document.getElementById('epMunicipio').value = mun;
-    document.getElementById('epTelefone').value = '+244 222 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,6);
-    document.getElementById('epEmail').value = 'geral@empresa' + uid + '.co.ao';
-    document.getElementById('epNif').value = String(Math.floor(Math.random()*9000000000+1000000000));
+    const campos = form.querySelectorAll('input, select, textarea');
+    campos.forEach(campo => {
+        const name = campo.name || campo.id;
+        if (!name) return;
 
-    // Resp. RH
-    const rhNome = isMasc ? nomesFem[Math.floor(Math.random()*nomesFem.length)] : nomesMasc[Math.floor(Math.random()*nomesMasc.length)];
-    document.getElementById('rhNome').value = rhNome;
-    document.getElementById('rhEmail').value = rhNome.toLowerCase().replace(/\s+/g,'.')+'.rh@empresa'+uid+'.co.ao';
-    document.getElementById('rhTelemovel').value = '+244 924 ' + String(Math.floor(Math.random()*900000+100000)).slice(0,3)+' '+String(Math.floor(Math.random()*9000+1000));
+        const valor = valoresPorCampo[name];
+        if (valor === undefined) return;
 
-    // Visual feedback
+        if (campo.type === 'radio') {
+            campo.checked = (campo.value === valor);
+        } else if (campo.type === 'checkbox') {
+            campo.checked = Boolean(valor);
+        } else {
+            campo.value = valor;
+        }
+    });
+
     const btn = document.getElementById('btnAutoFill');
     if (btn) {
         btn.textContent = '✅ Preenchido!';
@@ -376,3 +405,4 @@ function preencherAutomatico() {
 </script>
 </body>
 </html>
+
