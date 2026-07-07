@@ -317,6 +317,13 @@ const cursos    = ['Gestão de Recursos Humanos','Contabilidade e Gestão','Mark
 const horarios  = ['Manhã','Tarde','Fim de Tarde','Sábado'];
 const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga'];
 
+function selecionarRadio(nome, valor) {
+    const radios = document.querySelectorAll(`input[name="${nome}"]`);
+    radios.forEach(radio => {
+        radio.checked = (radio.value === valor);
+    });
+}
+
 function preencherAutomatico() {
     const isMasc = Math.random() > 0.45;
     const nomes  = isMasc ? nomesMasc : nomesFem;
@@ -328,7 +335,7 @@ function preencherAutomatico() {
 
     // Curso
     document.getElementById('curso').value = curso;
-    document.querySelector(`input[name='horario'][value='${horario}']`).checked = true;
+    selecionarRadio('horario', horario);
 
     // Formando
     document.getElementById('nome').value = nome;
@@ -342,7 +349,7 @@ function preencherAutomatico() {
     const mes = String(Math.floor(Math.random()*12+1)).padStart(2,'0');
     const dia = String(Math.floor(Math.random()*28+1)).padStart(2,'0');
     document.getElementById('dataNascimento').value = `${ano}-${mes}-${dia}`;
-    document.querySelector(`input[name='sexo'][value='${isMasc ? 'M' : 'F'}']`).checked = true;
+    selecionarRadio('sexo', isMasc ? 'M' : 'F');
 
     // Entidade Pagadora
     document.getElementById('epNome').value = 'Empresa ' + mun + ' Lda.';
@@ -361,8 +368,10 @@ function preencherAutomatico() {
 
     // Visual feedback
     const btn = document.getElementById('btnAutoFill');
-    btn.textContent = '✅ Preenchido!';
-    setTimeout(() => { btn.textContent = '⚡ Auto-Preencher (Teste)'; }, 2000);
+    if (btn) {
+        btn.textContent = '✅ Preenchido!';
+        setTimeout(() => { btn.textContent = '⚡ Auto-Preencher (Teste)'; }, 2000);
+    }
 }
 </script>
 </body>
