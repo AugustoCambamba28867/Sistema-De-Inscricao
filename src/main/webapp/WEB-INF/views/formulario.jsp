@@ -311,11 +311,13 @@
 <script src="${pageContext.request.contextPath}/js/validation.js"></script>
 <script>
 // Auto-preenchimento com dados de teste (para demos e provas)
-const nomesMasc = ['Augusto Cambamba','Carlos Manuel','JoÃ£o Pedro Silva','Miguel AntÃ³nio','Fernando Costa','David Lopes','Rafael Neto'];
-const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria LuÃ­sa','Vanessa Gomes','Catarina Ferreira','Diana Alves'];
-const cursos    = ['GestÃ£o de Recursos Humanos','Contabilidade e GestÃ£o','Marketing Digital','InformÃ¡tica e ProgramaÃ§Ã£o','LogÃ­stica e Supply Chain','FinanÃ§as Empresariais'];
-const horarios  = ['ManhÃ£','Tarde','Fim de Tarde','SÃ¡bado'];
-const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga'];
+const nomesMasc = ['Augusto Cambamba','Carlos Manuel','João Pedro Silva','Miguel António','Fernando Costa','David Lopes','Rafael Neto','Domingos Kiala','Manuel Paulo','Nelson Chikoti'];
+const nomesFem  = ['Ana Maria Sousa','Beatriz Santos','Maria Luísa','Vanessa Gomes','Catarina Ferreira','Diana Alves','Rosa Kiala','Lúcia Pedro','Sónia Fernandes','Marta Joaquim'];
+const cursos    = ['Gestão de Recursos Humanos','Contabilidade e Gestão','Marketing Digital','Informática e Programação','Logística e Supply Chain','Finanças Empresariais'];
+const horarios  = ['Manhã','Tarde','Fim de Tarde','Sábado'];
+const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizanga','Cazenga','Talatona','Kifangondo','Ingombota'];
+const ruas      = ['Rua da Liberdade','Avenida 4 de Fevereiro','Rua 17 de Setembro','Rua dos Combatentes','Avenida de Angola','Rua do Comércio'];
+const bairros   = ['Maianga','Ingombota','Sambizanga','Vila Alice','Kilamba','Cazenga','Talatona','Morro Bento'];
 
 function selecionarRadio(nome, valor) {
     const radios = document.querySelectorAll(`input[name="${nome}"]`);
@@ -335,7 +337,9 @@ function preencherAutomatico() {
     const horario = horarios[Math.floor(Math.random() * horarios.length)];
     const mun = municipios[Math.floor(Math.random() * municipios.length)];
     const uid = Date.now();
-    const morada = 'Rua ' + Math.floor(Math.random() * 200 + 1) + ', Bairro Central';
+    const rua = ruas[Math.floor(Math.random() * ruas.length)];
+    const bairro = bairros[Math.floor(Math.random() * bairros.length)];
+    const morada = rua + ', nº ' + Math.floor(Math.random() * 200 + 1) + ', ' + bairro;
     const telefone = '+244 222 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 3) + ' ' + String(Math.floor(Math.random() * 9000 + 1000));
     const telemovel = '+244 9' + (isMasc ? '2' : '3') + String(Math.floor(Math.random() * 9000000 + 1000000));
     const email = nome.toLowerCase().replace(/\s+/g, '.').replace(/[ãçéêíõú]/g, 'a') + uid + '@gmail.com';
