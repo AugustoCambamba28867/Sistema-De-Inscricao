@@ -32,7 +32,7 @@
                 <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-primario" style="width:100%;justify-content:center;padding:13px;">
-                Entrar no Sistema →
+                Entrar no sistema →
             </button>
         </form>
 

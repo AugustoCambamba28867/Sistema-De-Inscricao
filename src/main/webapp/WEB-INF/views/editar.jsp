@@ -196,7 +196,7 @@
         <!-- BOTÕES -->
         <div class="card">
             <div class="btn-grupo">
-                <button type="submit" class="btn btn-primario">💾 Guardar Alterações</button>
+                <button type="submit" class="btn btn-primario">💾 Guardar alterações</button>
                 <a href="${pageContext.request.contextPath}/listagem" class="btn btn-secundario">❌ Cancelar</a>
             </div>
         </div>

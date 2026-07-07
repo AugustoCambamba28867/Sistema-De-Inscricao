@@ -135,14 +135,14 @@
     <div class="card">
         <div class="btn-grupo">
             <a href="${pageContext.request.contextPath}/listagem"
-               class="btn btn-secundario" id="btnVoltarListagem">← Voltar à Lista</a>
+               class="btn btn-secundario" id="btnVoltarListagem">← Voltar à listagem</a>
             <form method="post" action="${pageContext.request.contextPath}/listagem"
                   onsubmit="return confirm('Tem a certeza que deseja eliminar esta inscrição?')"
                   style="display:inline;">
                 <input type="hidden" name="action" value="eliminar">
                 <input type="hidden" name="id" value="${inscricao.id}">
                 <button type="submit" class="btn btn-perigo" id="btnEliminarDetalhe">
-                    🗑 Eliminar Esta Inscrição
+                    🗑 Eliminar esta inscrição
                 </button>
             </form>
         </div>

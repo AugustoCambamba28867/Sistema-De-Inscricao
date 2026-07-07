@@ -284,18 +284,18 @@
         <div class="card">
             <div class="btn-grupo">
                 <button type="submit" class="btn btn-primario" id="btnGravar">
-                    ðŸ’¾ Gravar InscriÃ§Ã£o
+                    💾 Gravar Inscrição
                 </button>
                 <button type="button" onclick="preencherAutomatico()" class="btn" id="btnAutoFill"
                     style="background:linear-gradient(135deg,#059669 0%,#047857 100%);color:white;box-shadow:0 2px 8px rgba(5,150,105,.3);">
-                    âš¡ Auto-Preencher (Teste)
+                    ⚡ Auto-preencher (teste)
                 </button>
                 <button type="reset" class="btn btn-secundario" id="btnLimpar">
-                    ðŸ”„ Limpar
+                    🧹 Limpar
                 </button>
                 <a href="${pageContext.request.contextPath}/listagem"
                    class="btn btn-secundario" id="btnListagem">
-                    ðŸ“‹ Ver InscriÃ§Ãµes
+                    📋 Ver Inscrições
                 </a>
             </div>
         </div>
@@ -320,7 +320,10 @@ const municipios= ['Luanda','Viana','Cacuaco','Belas','Kilamba Kiaxi','Sambizang
 function selecionarRadio(nome, valor) {
     const radios = document.querySelectorAll(`input[name="${nome}"]`);
     radios.forEach(radio => {
-        radio.checked = (radio.value === valor);
+        const estaSelecionado = radio.value === valor;
+        radio.checked = estaSelecionado;
+        radio.dispatchEvent(new Event('change', { bubbles: true }));
+        radio.dispatchEvent(new Event('input', { bubbles: true }));
     });
 }
 
@@ -343,63 +346,54 @@ function preencherAutomatico() {
     const epNome = 'Empresa ' + mun + ' Lda.';
     const epMorada = 'Av. 1º Congresso, Nº ' + Math.floor(Math.random() * 500 + 1);
     const epTelefone = '+244 222 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 6);
+    const epFax = '+244 222 123 456';
     const epEmail = 'geral@empresa' + uid + '.co.ao';
     const epNif = String(Math.floor(Math.random() * 9000000000 + 1000000000));
     const rhNome = isMasc ? nomesFem[Math.floor(Math.random() * nomesFem.length)] : nomesMasc[Math.floor(Math.random() * nomesMasc.length)];
+    const rhTelefone = '+244 222 111 222';
     const rhEmail = rhNome.toLowerCase().replace(/\s+/g, '.') + '.rh@empresa' + uid + '.co.ao';
     const rhTelemovel = '+244 924 ' + String(Math.floor(Math.random() * 900000 + 100000)).slice(0, 3) + ' ' + String(Math.floor(Math.random() * 9000 + 1000));
 
-    const valoresPorCampo = {
-        curso,
-        horario,
-        nome,
-        morada,
-        localidade: mun,
-        municipio: mun,
-        telefone,
-        telemovel,
-        email,
-        dataNascimento,
-        sexo: isMasc ? 'M' : 'F',
-        epNome,
-        epMorada,
-        epLocalidade: mun,
-        epMunicipio: mun,
-        epTelefone,
-        epTelemovel: telemovel,
-        epFax: '+244 222 123 456',
-        epEmail,
-        epNif,
-        rhNome,
-        rhTelefone: '+244 222 111 222',
-        rhTelemovel,
-        rhEmail
-    };
+    const campos = [
+        ['curso', curso],
+        ['nome', nome],
+        ['morada', morada],
+        ['localidade', mun],
+        ['municipio', mun],
+        ['telefone', telefone],
+        ['telemovel', telemovel],
+        ['email', email],
+        ['dataNascimento', dataNascimento],
+        ['epNome', epNome],
+        ['epMorada', epMorada],
+        ['epLocalidade', mun],
+        ['epMunicipio', mun],
+        ['epTelefone', epTelefone],
+        ['epTelemovel', telemovel],
+        ['epFax', epFax],
+        ['epEmail', epEmail],
+        ['epNif', epNif],
+        ['rhNome', rhNome],
+        ['rhTelefone', rhTelefone],
+        ['rhTelemovel', rhTelemovel],
+        ['rhEmail', rhEmail]
+    ];
 
-    const form = document.getElementById('formInscricao');
-    if (!form) return;
-
-    const campos = form.querySelectorAll('input, select, textarea');
-    campos.forEach(campo => {
-        const name = campo.name || campo.id;
-        if (!name) return;
-
-        const valor = valoresPorCampo[name];
-        if (valor === undefined) return;
-
-        if (campo.type === 'radio') {
-            campo.checked = (campo.value === valor);
-        } else if (campo.type === 'checkbox') {
-            campo.checked = Boolean(valor);
-        } else {
-            campo.value = valor;
-        }
+    campos.forEach(([id, valor]) => {
+        const campo = document.getElementById(id);
+        if (!campo) return;
+        campo.value = valor;
+        campo.dispatchEvent(new Event('input', { bubbles: true }));
+        campo.dispatchEvent(new Event('change', { bubbles: true }));
     });
+
+    selecionarRadio('horario', horario);
+    selecionarRadio('sexo', isMasc ? 'M' : 'F');
 
     const btn = document.getElementById('btnAutoFill');
     if (btn) {
         btn.textContent = '✅ Preenchido!';
-        setTimeout(() => { btn.textContent = '⚡ Auto-Preencher (Teste)'; }, 2000);
+        setTimeout(() => { btn.textContent = '⚡ Auto-preencher (teste)'; }, 2000);
     }
 }
 </script>

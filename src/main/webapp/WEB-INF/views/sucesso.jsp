@@ -54,11 +54,11 @@
             </a>
             <a href="${pageContext.request.contextPath}/listagem"
                class="btn btn-secundario" id="btnVerListagem">
-                📋 Ver Listagem
+                📋 Ver listagem
             </a>
             <a href="${pageContext.request.contextPath}/listagem?id=${inscricaoId}"
                class="btn btn-secundario" id="btnVerDetalhe">
-                🔍 Ver Detalhe
+                🔍 Ver detalhe
             </a>
         </div>
     </div>

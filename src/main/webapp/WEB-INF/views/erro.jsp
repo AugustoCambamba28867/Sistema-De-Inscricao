@@ -60,11 +60,11 @@
         <div class="btn-grupo" style="justify-content:center;">
             <a href="${pageContext.request.contextPath}/inscricao"
                class="btn btn-primario" id="btnVoltarInicio">
-                🏠 Ir para o Formulário
+                🏠 Ir para o formulário
             </a>
             <a href="${pageContext.request.contextPath}/listagem"
                class="btn btn-secundario" id="btnVoltarListagemErro">
-                📋 Ver Listagem
+                📋 Ver listagem
             </a>
         </div>
     </div>
