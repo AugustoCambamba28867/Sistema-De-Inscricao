@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Utilizadores – GET Training</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <style>
+        .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 16px; }
+        .modal-card { background: #fff; border-radius: 16px; width: min(100%, 420px); padding: 24px; box-shadow: 0 20px 45px rgba(0,0,0,0.25); }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+    </style>
 </head>
 <body>
 
@@ -88,7 +93,7 @@
                             <td><span class="badge-papel ${u.papel}">${u.papel}</span></td>
                             <td>
                                 <c:if test="${u.id != sessionScope.admin.id}">
-                                    <form method="post" action="${pageContext.request.contextPath}/utilizadores" onsubmit="return confirm('Eliminar ${u.username}?')">
+                                    <form method="post" action="${pageContext.request.contextPath}/utilizadores" class="delete-form" data-confirm-message="Tem a certeza que deseja eliminar o utilizador ${u.username}?">
                                         <input type="hidden" name="action" value="eliminar">
                                         <input type="hidden" name="id" value="${u.id}">
                                         <button type="submit" class="btn btn-perigo" style="padding:4px 8px; font-size:12px;">🗑 Eliminar</button>
@@ -102,5 +107,50 @@
         </div>
     </div>
 </main>
+<div id="confirmModal" class="modal-backdrop" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <h3 id="confirmTitle" style="margin:0 0 8px;color:#111827;">Confirmar eliminação</h3>
+        <p id="confirmMessage" style="margin:0;color:#374151;line-height:1.5;"></p>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secundario" id="confirmCancel">Cancelar</button>
+            <button type="button" class="btn btn-perigo" id="confirmConfirm">Sim, eliminar</button>
+        </div>
+    </div>
+</div>
+<script>
+    const modal = document.getElementById('confirmModal');
+    const modalMessage = document.getElementById('confirmMessage');
+    const cancelBtn = document.getElementById('confirmCancel');
+    const confirmBtn = document.getElementById('confirmConfirm');
+    let pendingForm = null;
+
+    document.querySelectorAll('form.delete-form').forEach(form => {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            pendingForm = form;
+            modalMessage.textContent = form.dataset.confirmMessage || 'Tem a certeza que deseja eliminar este item?';
+            modal.hidden = false;
+        });
+    });
+
+    function closeModal() {
+        modal.hidden = true;
+        pendingForm = null;
+    }
+
+    cancelBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (event) {
+        if (event.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+    confirmBtn.addEventListener('click', function () {
+        if (pendingForm) {
+            modal.hidden = true;
+            pendingForm.submit();
+        }
+    });
+</script>
 </body>
 </html>
