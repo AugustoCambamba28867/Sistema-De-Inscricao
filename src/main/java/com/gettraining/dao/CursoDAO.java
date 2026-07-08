@@ -21,10 +21,18 @@ public class CursoDAO {
     }
 
     public int inserir(Connection conn, Curso curso) throws SQLException {
-        String sql = "INSERT INTO curso (nome, horario) VALUES (?, ?) RETURNING id";
+        String sql = "INSERT INTO curso (nome, periodo, hora_inicio, hora_fim, duracao) " +
+                     "VALUES (?, ?, ?, ?, ?) RETURNING id";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, curso.getNome());
-            ps.setString(2, curso.getHorario());
+            if (curso.getPeriodo() != null) {
+                ps.setDate(2, Date.valueOf(curso.getPeriodo()));
+            } else {
+                ps.setNull(2, Types.DATE);
+            }
+            ps.setString(3, curso.getHoraInicio());
+            ps.setString(4, curso.getHoraFim());
+            ps.setString(5, curso.getDuracao());
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -63,7 +71,13 @@ public class CursoDAO {
         Curso c = new Curso();
         c.setId(rs.getInt("id"));
         c.setNome(rs.getString("nome"));
-        c.setHorario(rs.getString("horario"));
+        java.sql.Date periodo = rs.getDate("periodo");
+        if (periodo != null) {
+            c.setPeriodo(periodo.toLocalDate());
+        }
+        c.setHoraInicio(rs.getString("hora_inicio"));
+        c.setHoraFim(rs.getString("hora_fim"));
+        c.setDuracao(rs.getString("duracao"));
         return c;
     }
 }

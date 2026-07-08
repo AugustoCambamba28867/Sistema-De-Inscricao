@@ -25,6 +25,10 @@ public class InscricaoServlet extends HttpServlet {
     // Padrão de validação de telefone (apenas dígitos, +, -, espaço)
     private static final Pattern TELEFONE_PATTERN =
             Pattern.compile("^[\\d\\s\\+\\-]{7,20}$");
+    
+    // Padrão de validação de hora (HH:MM format)
+    private static final Pattern HORARIO_PATTERN =
+            Pattern.compile("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
 
     /** GET – Exibir formulário de inscrição */
     @Override
@@ -49,7 +53,10 @@ public class InscricaoServlet extends HttpServlet {
 
         // ===== RECOLHER DADOS DO FORMULÁRIO =====
         String nomeCurso   = sanitizar(req.getParameter("curso"));
-        String horario     = sanitizar(req.getParameter("horario"));
+        String periodo     = sanitizar(req.getParameter("periodo"));
+        String horaInicio  = sanitizar(req.getParameter("horaInicio"));
+        String horaFim     = sanitizar(req.getParameter("horaFim"));
+        String duracao     = sanitizar(req.getParameter("duracao"));
         String nome        = sanitizar(req.getParameter("nome"));
         String morada      = sanitizar(req.getParameter("morada"));
         String localidade  = sanitizar(req.getParameter("localidade"));
@@ -83,8 +90,28 @@ public class InscricaoServlet extends HttpServlet {
         if (nomeCurso == null || nomeCurso.isBlank())
             erros.append("• O nome do curso é obrigatório.<br>");
 
-        if (horario == null || horario.isBlank())
-            erros.append("• Seleccione um horário preferencial.<br>");
+        LocalDate periodoData = null;
+        if (periodo != null && !periodo.isBlank()) {
+            try {
+                periodoData = LocalDate.parse(periodo);
+                if (!isPeriodoPermitido(periodoData)) {
+                    erros.append("• O período deve ser do ano atual ou, no máximo, janeiro/fevereiro do ano seguinte.<br>");
+                } else if (periodoData.isBefore(LocalDate.now())) {
+                    erros.append("• O período da formação não pode ser anterior a hoje.<br>");
+                }
+            } catch (DateTimeParseException e) {
+                erros.append("• O período da formação deve estar no formato AAAA-MM-DD.<br>");
+            }
+        }
+
+        if (horaInicio == null || horaInicio.isBlank() || !HORARIO_PATTERN.matcher(horaInicio).matches())
+            erros.append("• Hora de início inválida. Use HH:MM.<br>");
+
+        if (horaFim == null || horaFim.isBlank() || !HORARIO_PATTERN.matcher(horaFim).matches())
+            erros.append("• Hora de fim inválida. Use HH:MM.<br>");
+
+        if (duracao == null || duracao.isBlank())
+            erros.append("• A duração da formação é obrigatória.<br>");
 
         if (nome == null || nome.isBlank())
             erros.append("• O nome do formando é obrigatório.<br>");
@@ -136,7 +163,10 @@ public class InscricaoServlet extends HttpServlet {
         // ===== CONSTRUIR OBJECTOS DO MODELO =====
         Curso curso = new Curso();
         curso.setNome(nomeCurso);
-        curso.setHorario(horario);
+        curso.setPeriodo(periodoData);
+        curso.setHoraInicio(horaInicio);
+        curso.setHoraFim(horaFim);
+        curso.setDuracao(duracao);
 
         Formando formando = new Formando();
         formando.setNome(nome);
@@ -185,6 +215,18 @@ public class InscricaoServlet extends HttpServlet {
             req.setAttribute("mensagemErro", "Erro ao gravar inscrição: " + e.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
         }
+    }
+
+    private boolean isPeriodoPermitido(LocalDate periodoData) {
+        int anoAtual = LocalDate.now().getYear();
+        int anoPeriodo = periodoData.getYear();
+        if (anoPeriodo < anoAtual) {
+            return false;
+        }
+        if (anoPeriodo == anoAtual) {
+            return true;
+        }
+        return anoPeriodo == anoAtual + 1 && periodoData.getMonthValue() <= 2;
     }
 
     /**

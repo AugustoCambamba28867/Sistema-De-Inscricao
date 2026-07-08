@@ -1,5 +1,23 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%
+    String periodoValue = request.getParameter("periodo");
+    if (periodoValue != null) {
+        periodoValue = periodoValue.trim();
+    }
+    if (periodoValue == null || !periodoValue.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        periodoValue = "";
+    }
+    String dataNascimentoValue = request.getParameter("dataNascimento");
+    if (dataNascimentoValue != null) {
+        dataNascimentoValue = dataNascimentoValue.trim();
+    }
+    if (dataNascimentoValue == null || !dataNascimentoValue.matches("\\d{4}-\\d{2}-\\d{2}")) {
+        dataNascimentoValue = "";
+    }
+    request.setAttribute("cleanPeriodo", periodoValue);
+    request.setAttribute("cleanDataNascimento", dataNascimentoValue);
+%>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -62,29 +80,35 @@
                 </div>
             </div>
 
-            <div class="campo">
-                <label>Horário preferencial <span class="obrig">*</span></label>
-                <div class="radio-grupo" id="horarioDiv">
-                    <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Manhã"
-                               <c:if test="${param.horario == 'Manhã'}">checked</c:if>>
-                        Manhã
-                    </label>
-                    <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Tarde"
-                               <c:if test="${param.horario == 'Tarde'}">checked</c:if>>
-                        Tarde
-                    </label>
-                    <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Fim de Tarde"
-                               <c:if test="${param.horario == 'Fim de Tarde'}">checked</c:if>>
-                        Fim de Tarde
-                    </label>
-                    <label class="radio-opcao">
-                        <input type="radio" name="horario" value="Sábado"
-                               <c:if test="${param.horario == 'Sábado'}">checked</c:if>>
-                        Sábado
-                    </label>
+            <div class="form-linha col-2">
+                <div class="campo">
+                    <label for="periodo">Período da Formação</label>
+                    <input type="text" id="periodo" name="periodo" maxlength="10"
+                           placeholder="AAAA-MM-DD"
+                           pattern="\d{4}-\d{2}-\d{2}"
+                           title="Ano-Mês-Dia: AAAA-MM-DD"
+                           value="<c:out value='${cleanPeriodo}'/>">
+                </div>
+                <div class="campo">
+                    <label for="duracao">Duração <span class="obrig">*</span></label>
+                    <input type="text" id="duracao" name="duracao" maxlength="50" required
+                           placeholder="Ex: 40 horas, 5 dias"
+                           value="<c:out value='${param.duracao}'/>">
+                </div>
+            </div>
+
+            <div class="form-linha col-2">
+                <div class="campo">
+                    <label for="horaInicio">Hora de Início <span class="obrig">*</span></label>
+                    <input type="time" id="horaInicio" name="horaInicio" required
+                           value="<c:out value='${param.horaInicio}'/>"
+                           style="padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <div class="campo">
+                    <label for="horaFim">Hora de Fim <span class="obrig">*</span></label>
+                    <input type="time" id="horaFim" name="horaFim" required
+                           value="<c:out value='${param.horaFim}'/>"
+                           style="padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px;">
                 </div>
             </div>
         </section>
@@ -153,8 +177,11 @@
             <div class="form-linha col-2">
                 <div class="campo">
                     <label for="dataNascimento">Data de Nascimento</label>
-                    <input type="date" id="dataNascimento" name="dataNascimento"
-                           value="<c:out value='${param.dataNascimento}'/>">
+                    <input type="text" id="dataNascimento" name="dataNascimento" maxlength="10"
+                           placeholder="AAAA-MM-DD"
+                           pattern="\d{4}-\d{2}-\d{2}"
+                           title="Ano-Mês-Dia: AAAA-MM-DD"
+                           value="<c:out value='${cleanDataNascimento}'/>">
                 </div>
                 <div class="campo">
                     <label>Sexo <span class="obrig">*</span></label>
@@ -205,7 +232,7 @@
                     <label for="epMunicipio">Município</label>
                     <input type="text" id="epMunicipio" name="epMunicipio" maxlength="100"
                            placeholder="Município"
-                           value="<c:out value='${param.epMunicipio}'/>
+                           value="<c:out value='${param.epMunicipio}'/>">
                 </div>
             </div>
 
@@ -309,7 +336,7 @@
     <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
 </footer>
 
-<script src="${pageContext.request.contextPath}/js/validation.js"></script>
+<script src="${pageContext.request.contextPath}/js/validation.js?v=2"></script>
 <script>
 // Auto-preenchimento com dados de teste (20 perfis: 13 rapazes e 7 mulheres)
 const perfisTeste = [
@@ -421,7 +448,22 @@ function preencherAutomatico() {
         setTimeout(() => { btn.textContent = '⚡ Auto-preencher (teste)'; }, 2000);
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    ['periodo', 'dataNascimento'].forEach(function (id) {
+        const campo = document.getElementById(id);
+        if (!campo || !campo.value) return;
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(campo.value)) {
+            campo.value = '';
+        }
+    });
+});
 </script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
 </html>
 

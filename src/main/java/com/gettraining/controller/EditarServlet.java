@@ -8,9 +8,14 @@ import jakarta.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "EditarServlet", urlPatterns = {"/editar"})
 public class EditarServlet extends HttpServlet {
+
+    // Padrão de validação de hora (HH:MM format)
+    private static final Pattern HORARIO_PATTERN =
+            Pattern.compile("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -58,9 +63,63 @@ public class EditarServlet extends HttpServlet {
                 return;
             }
 
+            // Validar horários e período
+            String periodo = req.getParameter("periodo");
+            String horaInicio = req.getParameter("horaInicio");
+            String horaFim = req.getParameter("horaFim");
+            String duracao = req.getParameter("duracao");
+            LocalDate periodoData = null;
+            
+            if (periodo != null && !periodo.isBlank()) {
+                try {
+                    periodoData = LocalDate.parse(periodo);
+                    if (!isPeriodoPermitido(periodoData)) {
+                        req.setAttribute("mensagemErro", "O período deve ser do ano atual ou, no máximo, janeiro/fevereiro do ano seguinte.");
+                        req.setAttribute("inscricao", inscricao);
+                        req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                        return;
+                    }
+                    if (periodoData.isBefore(LocalDate.now())) {
+                        req.setAttribute("mensagemErro", "O período da formação não pode ser anterior a hoje.");
+                        req.setAttribute("inscricao", inscricao);
+                        req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                        return;
+                    }
+                } catch (DateTimeParseException ex) {
+                    req.setAttribute("mensagemErro", "O período da formação deve estar no formato AAAA-MM-DD.");
+                    req.setAttribute("inscricao", inscricao);
+                    req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                    return;
+                }
+            }
+            
+            if (horaInicio == null || horaInicio.isBlank() || !HORARIO_PATTERN.matcher(horaInicio).matches()) {
+                req.setAttribute("mensagemErro", "Hora de início inválida. Use HH:MM.");
+                req.setAttribute("inscricao", inscricao);
+                req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                return;
+            }
+            
+            if (horaFim == null || horaFim.isBlank() || !HORARIO_PATTERN.matcher(horaFim).matches()) {
+                req.setAttribute("mensagemErro", "Hora de fim inválida. Use HH:MM.");
+                req.setAttribute("inscricao", inscricao);
+                req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                return;
+            }
+            
+            if (duracao == null || duracao.isBlank()) {
+                req.setAttribute("mensagemErro", "Duração da formação é obrigatória.");
+                req.setAttribute("inscricao", inscricao);
+                req.getRequestDispatcher("/WEB-INF/views/editar.jsp").forward(req, resp);
+                return;
+            }
+
             // Atualiza dados
             inscricao.getCurso().setNome(req.getParameter("curso"));
-            inscricao.getCurso().setHorario(req.getParameter("horario"));
+            inscricao.getCurso().setPeriodo(periodoData);
+            inscricao.getCurso().setHoraInicio(horaInicio);
+            inscricao.getCurso().setHoraFim(horaFim);
+            inscricao.getCurso().setDuracao(duracao);
             
             Formando f = inscricao.getFormando();
             f.setNome(req.getParameter("nome"));
@@ -99,10 +158,21 @@ public class EditarServlet extends HttpServlet {
             dao.atualizar(inscricao);
             
             resp.sendRedirect(req.getContextPath() + "/listagem?sucesso=true");
-
         } catch (Exception ex) {
             req.setAttribute("mensagemErro", "Erro ao editar inscrição: " + ex.getMessage());
             req.getRequestDispatcher("/WEB-INF/views/erro.jsp").forward(req, resp);
         }
+    }
+
+    private boolean isPeriodoPermitido(LocalDate periodoData) {
+        int anoAtual = LocalDate.now().getYear();
+        int anoPeriodo = periodoData.getYear();
+        if (anoPeriodo < anoAtual) {
+            return false;
+        }
+        if (anoPeriodo == anoAtual) {
+            return true;
+        }
+        return anoPeriodo == anoAtual + 1 && periodoData.getMonthValue() <= 2;
     }
 }

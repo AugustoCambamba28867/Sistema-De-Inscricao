@@ -1,5 +1,21 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%
+    String periodoValue = "";
+    String dataNascimentoValue = "";
+    if (inscricao != null && inscricao.getCurso() != null && inscricao.getCurso().getPeriodo() != null) {
+        String rawPeriodo = inscricao.getCurso().getPeriodo().toString();
+        if (rawPeriodo.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            periodoValue = rawPeriodo;
+        }
+    }
+    if (inscricao != null && inscricao.getFormando() != null && inscricao.getFormando().getDataNascimento() != null) {
+        String rawNascimento = inscricao.getFormando().getDataNascimento().toString();
+        if (rawNascimento.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            dataNascimentoValue = rawNascimento;
+        }
+    }
+%>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -51,13 +67,33 @@
                     <input type="text" id="curso" name="curso" maxlength="150" value="<c:out value='${inscricao.curso.nome}'/>" required>
                 </div>
             </div>
-            <div class="campo">
-                <label>Horário Preferencial <span class="obrig">*</span></label>
-                <div class="radio-grupo" id="horarioDiv">
-                    <label class="radio-opcao"><input type="radio" name="horario" value="Manhã" <c:if test="${inscricao.curso.horario == 'Manhã'}">checked</c:if>> Manhã</label>
-                    <label class="radio-opcao"><input type="radio" name="horario" value="Tarde" <c:if test="${inscricao.curso.horario == 'Tarde'}">checked</c:if>> Tarde</label>
-                    <label class="radio-opcao"><input type="radio" name="horario" value="Fim de Tarde" <c:if test="${inscricao.curso.horario == 'Fim de Tarde'}">checked</c:if>> Fim de Tarde</label>
-                    <label class="radio-opcao"><input type="radio" name="horario" value="Sábado" <c:if test="${inscricao.curso.horario == 'Sábado'}">checked</c:if>> Sábado</label>
+            <div class="form-linha col-2">
+                <div class="campo">
+                    <label for="periodo">Período da Formação</label>
+                    <input type="text" id="periodo" name="periodo" maxlength="10"
+                           placeholder="AAAA-MM-DD"
+                           pattern="\d{4}-\d{2}-\d{2}"
+                           title="Ano-Mês-Dia: AAAA-MM-DD"
+                           value="<c:out value='${periodoValue}'/>">
+                </div>
+                <div class="campo">
+                    <label for="duracao">Duração <span class="obrig">*</span></label>
+                    <input type="text" id="duracao" name="duracao" maxlength="50" required
+                           placeholder="Ex: 40 horas, 5 dias"
+                           value="<c:out value='${inscricao.curso.duracao}'/>">
+                </div>
+            </div>
+
+            <div class="form-linha col-2">
+                <div class="campo">
+                    <label for="horaInicio">Hora de Início <span class="obrig">*</span></label>
+                    <input type="time" id="horaInicio" name="horaInicio" required
+                           value="<c:out value='${inscricao.curso.horaInicio}'/>">
+                </div>
+                <div class="campo">
+                    <label for="horaFim">Hora de Fim <span class="obrig">*</span></label>
+                    <input type="time" id="horaFim" name="horaFim" required
+                           value="<c:out value='${inscricao.curso.horaFim}'/>">
                 </div>
             </div>
         </section>
@@ -106,7 +142,11 @@
             <div class="form-linha col-2">
                 <div class="campo">
                     <label for="dataNascimento">Data de Nascimento</label>
-                    <input type="date" id="dataNascimento" name="dataNascimento" value="<c:out value='${inscricao.formando.dataNascimento}'/>">
+                    <input type="text" id="dataNascimento" name="dataNascimento" maxlength="10"
+                           placeholder="AAAA-MM-DD"
+                           pattern="\d{4}-\d{2}-\d{2}"
+                           title="Ano-Mês-Dia: AAAA-MM-DD"
+                           value="<c:out value='${dataNascimentoValue}'/>">
                 </div>
                 <div class="campo">
                     <label>Sexo <span class="obrig">*</span></label>
@@ -203,6 +243,12 @@
         </div>
     </form>
 </main>
-<script src="${pageContext.request.contextPath}/js/validation.js"></script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
+<script src="${pageContext.request.contextPath}/js/validation.js?v=2"></script>
 </body>
+</html>
 </html>

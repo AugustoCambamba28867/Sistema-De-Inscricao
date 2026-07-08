@@ -58,11 +58,26 @@ public class DbInitializerListener implements ServletContextListener {
                 // Tabela Curso
                 stmt.executeUpdate("""
                     CREATE TABLE IF NOT EXISTS curso (
-                        id      SERIAL PRIMARY KEY,
-                        nome    VARCHAR(150) NOT NULL,
-                        horario VARCHAR(50)  NOT NULL
+                        id         SERIAL PRIMARY KEY,
+                        nome       VARCHAR(150) NOT NULL,
+                        periodo    DATE,
+                        hora_inicio VARCHAR(5),
+                        hora_fim   VARCHAR(5),
+                        duracao    VARCHAR(50)
                     )
                 """);
+
+                // Ajustar esquema antigo caso a tabela já exista com coluna 'horario'
+                try {
+                    stmt.executeUpdate("ALTER TABLE curso ADD COLUMN IF NOT EXISTS periodo DATE");
+                    stmt.executeUpdate("ALTER TABLE curso ADD COLUMN IF NOT EXISTS hora_inicio VARCHAR(5)");
+                    stmt.executeUpdate("ALTER TABLE curso ADD COLUMN IF NOT EXISTS hora_fim VARCHAR(5)");
+                    stmt.executeUpdate("ALTER TABLE curso ADD COLUMN IF NOT EXISTS duracao VARCHAR(50)");
+                    stmt.executeUpdate("ALTER TABLE curso DROP COLUMN IF EXISTS horario");
+                } catch (Exception e) {
+                    // Ignora falhas de migração em versões de PostgreSQL que não suportem IF NOT EXISTS,
+                    // mas mantém a estrutura de aplicação consistente quando possível.
+                }
 
                 // Tabela Formando
                 stmt.executeUpdate("""
@@ -119,13 +134,14 @@ public class DbInitializerListener implements ServletContextListener {
                     )
                 """);
 
-                // Tabela Administrador com suporte a níveis de permissão (papel)
+                // Tabela Administrador com suporte a níveis de permissão (papel) e alteração obrigatória de senha
                 stmt.executeUpdate("""
                     CREATE TABLE IF NOT EXISTS administrador (
-                        id       SERIAL PRIMARY KEY,
-                        username VARCHAR(50) UNIQUE NOT NULL,
-                        password VARCHAR(255) NOT NULL,
-                        papel    VARCHAR(50) DEFAULT 'GESTOR'
+                        id                  SERIAL PRIMARY KEY,
+                        username            VARCHAR(50) UNIQUE NOT NULL,
+                        password            VARCHAR(255) NOT NULL,
+                        papel               VARCHAR(50) DEFAULT 'GESTOR',
+                        must_change_password BOOLEAN DEFAULT FALSE
                     )
                 """);
 
@@ -147,6 +163,12 @@ public class DbInitializerListener implements ServletContextListener {
                 } catch (Exception e) {
                     // Ignora erro se a sintaxe IF NOT EXISTS não for suportada em versões muito antigas do PostgreSQL
                 }
+
+                try {
+                    stmt.executeUpdate("ALTER TABLE administrador ADD COLUMN IF NOT EXISTS must_change_password BOOLEAN DEFAULT FALSE");
+                } catch (Exception e) {
+                    // Ignora erro se a sintaxe IF NOT EXISTS não for suportada em versões muito antigas do PostgreSQL
+                }
                 
                 try {
                     stmt.executeUpdate("ALTER TABLE audit_log ADD COLUMN IF NOT EXISTS username VARCHAR(50)");
@@ -157,8 +179,8 @@ public class DbInitializerListener implements ServletContextListener {
                 if (!DbConfig.ADMIN_PASSWORD.isBlank()) {
                     String defaultAdminHash = PasswordUtil.hashPassword(DbConfig.ADMIN_PASSWORD);
                     try (PreparedStatement ps = conn.prepareStatement("""
-                        INSERT INTO administrador (username, password, papel)
-                        SELECT ?, ?, 'SUPER_ADMIN'
+                        INSERT INTO administrador (username, password, papel, must_change_password)
+                        SELECT ?, ?, 'SUPER_ADMIN', true
                         WHERE NOT EXISTS (SELECT 1 FROM administrador WHERE username = ?)
                     """)) {
                         ps.setString(1, DbConfig.ADMIN_USERNAME);

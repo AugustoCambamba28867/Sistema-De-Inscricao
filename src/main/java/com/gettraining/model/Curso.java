@@ -1,5 +1,7 @@
 package com.gettraining.model;
 
+import java.time.LocalDate;
+
 /**
  * Bean - Entidade Curso
  * Representa um curso da GET Training Academy
@@ -7,14 +9,20 @@ package com.gettraining.model;
 public class Curso {
     private int id;
     private String nome;
-    private String horario; // Manhã, Tarde, Fim de Tarde, Sábado
+    private LocalDate periodo;    // data da formação
+    private String horaInicio;    // HH:MM
+    private String horaFim;       // HH:MM
+    private String duracao;       // em horas ou dias (ex: "40 horas", "5 dias")
 
     public Curso() {}
 
-    public Curso(int id, String nome, String horario) {
+    public Curso(int id, String nome, LocalDate periodo, String horaInicio, String horaFim, String duracao) {
         this.id = id;
         this.nome = nome;
-        this.horario = horario;
+        this.periodo = periodo;
+        this.horaInicio = horaInicio;
+        this.horaFim = horaFim;
+        this.duracao = duracao;
     }
 
     public int getId() { return id; }
@@ -23,11 +31,21 @@ public class Curso {
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
 
-    public String getHorario() { return horario; }
-    public void setHorario(String horario) { this.horario = horario; }
+    public LocalDate getPeriodo() { return periodo; }
+    public void setPeriodo(LocalDate periodo) { this.periodo = periodo; }
+
+    public String getHoraInicio() { return horaInicio; }
+    public void setHoraInicio(String horaInicio) { this.horaInicio = horaInicio; }
+
+    public String getHoraFim() { return horaFim; }
+    public void setHoraFim(String horaFim) { this.horaFim = horaFim; }
+
+    public String getDuracao() { return duracao; }
+    public void setDuracao(String duracao) { this.duracao = duracao; }
 
     @Override
     public String toString() {
-        return "Curso{id=" + id + ", nome='" + nome + "', horario='" + horario + "'}";
+        return "Curso{id=" + id + ", nome='" + nome + "', periodo='" + periodo + "', " +
+               "horaInicio='" + horaInicio + "', horaFim='" + horaFim + "', duracao='" + duracao + "'}";
     }
 }

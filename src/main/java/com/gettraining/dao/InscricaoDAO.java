@@ -83,7 +83,7 @@ public class InscricaoDAO {
         String sql = """
             SELECT i.id AS ins_id, i.data_inscricao,
                    f.id AS f_id, f.nome AS f_nome, f.email,
-                   c.nome AS c_nome, c.horario
+                   c.nome AS c_nome, c.periodo, c.hora_inicio, c.hora_fim, c.duracao
             FROM inscricao i
             JOIN formando f ON i.formando_id = f.id
             JOIN curso c ON f.curso_id = c.id
@@ -107,7 +107,13 @@ public class InscricaoDAO {
 
                 Curso c = new Curso();
                 c.setNome(rs.getString("c_nome"));
-                c.setHorario(rs.getString("horario"));
+                java.sql.Date periodo = rs.getDate("periodo");
+                if (periodo != null) {
+                    c.setPeriodo(periodo.toLocalDate());
+                }
+                c.setHoraInicio(rs.getString("hora_inicio"));
+                c.setHoraFim(rs.getString("hora_fim"));
+                c.setDuracao(rs.getString("duracao"));
                 ins.setCurso(c);
 
                 lista.add(ins);
@@ -231,11 +237,19 @@ public class InscricaoDAO {
             }
             
             // 2. Update Curso
-            String sqlCurso = "UPDATE curso SET nome=?, horario=? WHERE id=?";
+            String sqlCurso = "UPDATE curso SET nome=?, periodo=?, hora_inicio=?, hora_fim=?, duracao=? WHERE id=?";
             try (PreparedStatement ps = conn.prepareStatement(sqlCurso)) {
                 ps.setString(1, inscricao.getCurso().getNome());
-                ps.setString(2, inscricao.getCurso().getHorario());
-                ps.setInt(3, inscricao.getFormando().getCursoId());
+                java.time.LocalDate periodo = inscricao.getCurso().getPeriodo();
+                if (periodo != null) {
+                    ps.setDate(2, Date.valueOf(periodo));
+                } else {
+                    ps.setNull(2, Types.DATE);
+                }
+                ps.setString(3, inscricao.getCurso().getHoraInicio());
+                ps.setString(4, inscricao.getCurso().getHoraFim());
+                ps.setString(5, inscricao.getCurso().getDuracao());
+                ps.setInt(6, inscricao.getFormando().getCursoId());
                 ps.executeUpdate();
             }
             

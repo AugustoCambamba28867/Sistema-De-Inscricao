@@ -6,9 +6,24 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const form = document.getElementById('formInscricao');
-    if (!form) return;
+    if (!form) {
+        console.warn('[validation] formInscricao not found');
+        return;
+    }
+    console.debug('[validation] formInscricao found, attaching submit handler');
+
+    ['periodo', 'dataNascimento'].forEach(function (id) {
+        const campo = document.getElementById(id);
+        if (!campo) return;
+        campo.addEventListener('blur', function () {
+            normalizarData(campo);
+        });
+    });
 
     form.addEventListener('submit', function (e) {
+        console.debug('[validation] form submit event');
+        normalizarData(document.getElementById('periodo'));
+        normalizarData(document.getElementById('dataNascimento'));
         limparErros();
         let valido = true;
 
@@ -19,12 +34,44 @@ document.addEventListener('DOMContentLoaded', function () {
             valido = false;
         }
 
-        // ---- Horário ----
-        const horarios = document.querySelectorAll('input[name="horario"]');
-        const algumHorario = Array.from(horarios).some(r => r.checked);
-        if (!algumHorario) {
-            const horarioDiv = document.getElementById('horarioDiv');
-            mostrarErroDiv(horarioDiv, 'Seleccione um horário preferencial.');
+        // ---- Curso / Agendamento ----
+        const periodo = document.getElementById('periodo');
+        if (periodo && periodo.value.trim() !== '') {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(periodo.value.trim())) {
+                mostrarErro(periodo, 'O período deve estar no formato AAAA-MM-DD.');
+                valido = false;
+            } else {
+                const partes = periodo.value.trim().split('-');
+                const ano = parseInt(partes[0], 10);
+                const mes = parseInt(partes[1], 10);
+                const hoje = new Date();
+                const periodoData = new Date(partes[0], partes[1] - 1, partes[2]);
+
+                if (periodoData < new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) {
+                    mostrarErro(periodo, 'O período da formação não pode ser anterior a hoje.');
+                    valido = false;
+                } else if (ano < hoje.getFullYear() || ano > hoje.getFullYear() + 1 || (ano === hoje.getFullYear() + 1 && mes > 2)) {
+                    mostrarErro(periodo, 'O período deve ser do ano atual ou até fevereiro do ano seguinte.');
+                    valido = false;
+                }
+            }
+        }
+
+        const horaInicio = document.getElementById('horaInicio');
+        if (!horaInicio || horaInicio.value.trim() === '') {
+            mostrarErro(horaInicio, 'A hora de início é obrigatória.');
+            valido = false;
+        }
+
+        const horaFim = document.getElementById('horaFim');
+        if (!horaFim || horaFim.value.trim() === '') {
+            mostrarErro(horaFim, 'A hora de fim é obrigatória.');
+            valido = false;
+        }
+
+        const duracao = document.getElementById('duracao');
+        if (!duracao || duracao.value.trim() === '') {
+            mostrarErro(duracao, 'A duração da formação é obrigatória.');
             valido = false;
         }
 
@@ -98,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (!valido) {
+            console.debug('[validation] validation failed, preventing submit');
             e.preventDefault();
             // Rolar para o primeiro erro
             const primeiroErro = document.querySelector('.msg-erro-inline');
@@ -106,6 +154,32 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    function normalizarData(campo) {
+        if (!campo || !campo.value) return;
+        let valor = campo.value.trim();
+        // aceitar dd/mm/aaaa ou dd-mm-aaaa e converter para aaaa-mm-dd
+        const diaMesAno = valor.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (diaMesAno) {
+            const dia = diaMesAno[1].padStart(2, '0');
+            const mes = diaMesAno[2].padStart(2, '0');
+            const ano = diaMesAno[3];
+            campo.value = `${ano}-${mes}-${dia}`;
+            return;
+        }
+        // aceitar aaaa/mm/dd ou aaaa-mm-dd e normalizar
+        const anoMesDia = valor.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+        if (anoMesDia) {
+            const ano = anoMesDia[1];
+            const mes = anoMesDia[2].padStart(2, '0');
+            const dia = anoMesDia[3].padStart(2, '0');
+            campo.value = `${ano}-${mes}-${dia}`;
+            return;
+        }
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) {
+            campo.value = '';
+        }
+    }
 
     // ---- Funções Auxiliares ----
 
