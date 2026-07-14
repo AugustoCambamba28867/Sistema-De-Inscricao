@@ -30,7 +30,7 @@
         <session-timeout>20</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
-            <secure>true</secure>
+            <secure>false</secure>
             <same-site>Strict</same-site>
         </cookie-config>
     </session-config>

@@ -28,14 +28,24 @@ public final class PasswordUtil {
         if (password == null || storedHash == null || storedHash.isBlank()) {
             return false;
         }
+
         String[] parts = storedHash.split(":");
-        if (parts.length != 2) {
-            return false;
+        if (parts.length == 2) {
+            byte[] salt = Base64.getDecoder().decode(parts[0]);
+            byte[] hash = Base64.getDecoder().decode(parts[1]);
+            byte[] candidateHash = pbkdf2(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
+            return constantTimeEquals(hash, candidateHash);
         }
-        byte[] salt = Base64.getDecoder().decode(parts[0]);
-        byte[] hash = Base64.getDecoder().decode(parts[1]);
-        byte[] candidateHash = pbkdf2(password.toCharArray(), salt, ITERATIONS, KEY_LENGTH);
-        return constantTimeEquals(hash, candidateHash);
+
+        if (isLegacyHash(storedHash)) {
+            return HashUtil.hashSHA256(password).equalsIgnoreCase(storedHash);
+        }
+
+        return false;
+    }
+
+    public static boolean isLegacyHash(String storedHash) {
+        return storedHash != null && !storedHash.isBlank() && !storedHash.contains(":") && storedHash.matches("[0-9a-fA-F]{64}");
     }
 
     private static byte[] generateSalt() {

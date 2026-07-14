@@ -93,7 +93,7 @@
             <canvas id="chartMensal" height="210"></canvas>
         </div>
         <div class="chart-card">
-            <div class="chart-title">⏰ Preferência de Horário</div>
+            <div class="chart-title">⏰ Horário de Início</div>
             <canvas id="chartHorario" height="210"></canvas>
         </div>
     </div>
@@ -237,5 +237,10 @@
         }
     });
 </script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
 </html>

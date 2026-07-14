@@ -53,10 +53,14 @@
         <div class="detalhe-grid">
             <span class="detalhe-label">Curso:</span>
             <span class="detalhe-valor">${inscricao.curso.nome}</span>
-            <span class="detalhe-label">Horário:</span>
-            <span class="detalhe-valor">
-                <span class="badge-horario">${inscricao.curso.horario}</span>
-            </span>
+            <span class="detalhe-label">Período:</span>
+            <span class="detalhe-valor">${inscricao.curso.periodo}</span>
+            <span class="detalhe-label">Hora de Início:</span>
+            <span class="detalhe-valor">${inscricao.curso.horaInicio}</span>
+            <span class="detalhe-label">Hora de Fim:</span>
+            <span class="detalhe-valor">${inscricao.curso.horaFim}</span>
+            <span class="detalhe-label">Duração:</span>
+            <span class="detalhe-valor">${inscricao.curso.duracao}</span>
             <span class="detalhe-label">Data Inscrição:</span>
             <span class="detalhe-valor">${inscricao.dataInscricao}</span>
         </div>
@@ -206,5 +210,11 @@
         }
     });
 </script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
+</html>
 </html>

@@ -1,0 +1,78 @@
+GUIA RÁPIDO DA APLICAÇÃO WEB
+================================
+
+1. O que é um Servlet?
+-----------------------
+Um Servlet é uma classe Java que recebe requisições do navegador, processa a lógica da aplicação e envia uma resposta.
+
+Para que serve:
+- receber dados enviados pelo usuário;
+- chamar regras de negócio ou DAO;
+- decidir para qual página o usuário deve ser redirecionado.
+
+Onde foi implementado:
+- Pasta: src/main/java/com/gettraining/controller
+
+Arquivos principais:
+- LoginServlet.java -> processa o login do usuário.
+- InscricaoServlet.java -> controla o formulário de inscrição.
+- DashboardServlet.java -> mostra o painel principal.
+- ListagemServlet.java -> lista registros.
+- RelatorioServlet.java -> gera/mostra relatórios.
+- ChangePasswordServlet.java -> altera senha.
+- EditarServlet.java -> edita dados.
+- DbAdminServlet.java -> acesso administrativo.
+
+2. O que é um JSP?
+-------------------
+JSP significa JavaServer Pages. É um arquivo que representa a interface visual da aplicação e gera HTML para o navegador.
+
+Para que serve:
+- mostrar telas ao usuário;
+- receber dados do formulário;
+- exibir mensagens de sucesso, erro ou dados da base.
+
+Onde foi implementado:
+- Pasta: src/main/webapp/WEB-INF/views
+
+Arquivos principais:
+- login.jsp -> tela de login.
+- dashboard.jsp -> tela inicial do sistema.
+- formulario.jsp -> formulário de inscrição.
+- listagem.jsp -> exibe a listagem.
+- relatorios.jsp -> tela de relatórios.
+- editar.jsp -> tela de edição.
+- erro.jsp -> página de erro.
+- sucesso.jsp -> mensagem de sucesso.
+- utilizadores.jsp -> gestão de utilizadores.
+
+3. O que é o Tomcat?
+---------------------
+Tomcat é o servidor web que executa a aplicação Java web. Ele recebe as requisições HTTP, executa os Servlets e renderiza as páginas JSP.
+
+Para que serve:
+- hospedar a aplicação;
+- rodar o projeto no navegador;
+- gerenciar requisições e respostas.
+
+Onde foi aplicado:
+- Pasta de deploy do Tomcat: C:/Users/Cauchy/Documents/Ucan_2026/SDP1/apache-tomcat-10.1.56/webapps
+- Arquivo de configuração do contexto: src/main/webapp/META-INF/context.xml
+- Arquivo de configuração da aplicação web: src/main/webapp/WEB-INF/web.xml
+- Arquivo do Maven que faz o deploy da aplicação: pom.xml
+
+4. Como estes elementos se relacionam no projeto
+------------------------------------------------
+- O usuário acessa uma página JSP, como login.jsp.
+- A página pode enviar dados para um Servlet, como LoginServlet.java.
+- O Servlet processa a requisição e pode acessar o banco de dados.
+- Depois, o Servlet redireciona para outra JSP, como dashboard.jsp.
+
+Exemplo prático:
+- login.jsp -> recebe o login do usuário.
+- LoginServlet.java -> valida as credenciais.
+- dashboard.jsp -> mostra a tela após o login.
+
+5. Resumo simples para explicar ao professor
+-------------------------------------------
+A aplicação foi desenvolvida com uma arquitetura em 3 camadas: o Modelo representa os dados e o acesso ao banco PostgreSQL, o Controlador é implementado com Servlets para processar as requisições, e a Visão é composta por páginas JSP que geram a interface HTML exibida ao usuário. O Tomcat é o servidor que executa essa aplicação web.

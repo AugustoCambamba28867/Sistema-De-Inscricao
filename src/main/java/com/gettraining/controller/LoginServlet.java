@@ -57,7 +57,11 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
 
-                resp.sendRedirect(req.getContextPath() + "/dashboard");
+                if (admin.isMustChangePassword()) {
+                    resp.sendRedirect(req.getContextPath() + "/change-password?required=true");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/dashboard");
+                }
             } else {
                 auditDAO.registrar(null, username != null ? username : "UNKNOWN", "LOGIN_FAILED", "Tentativa de login inválida.", req.getRemoteAddr());
                 req.setAttribute("erro", "Credenciais inválidas.");

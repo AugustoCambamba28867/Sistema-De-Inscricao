@@ -7,16 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administração da Base de Dados – GET Training</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
-    <style>
-        .dbadmin-grid { display:grid; gap:20px; margin-bottom:24px; }
-        .dbadmin-card { padding:24px; border-radius:18px; background:#fff; border:1px solid var(--borda); }
-        .dbadmin-card h2 { margin-top:0; font-size:1.15rem; }
-        .dbadmin-card p { margin:0.6rem 0; color:var(--cinzento-dk); }
-        .audit-table { width:100%; border-collapse:collapse; }
-        .audit-table th, .audit-table td { padding:12px 10px; border-bottom:1px solid #eee; text-align:left; }
-        .audit-table th { background:#f8fafc; color:#334155; font-weight:700; }
-        .audit-table tbody tr:hover { background:#f8fafc; }
-    </style>
 </head>
 <body>
 <header class="cabecalho">
@@ -74,10 +64,10 @@
         </section>
     </div>
 
-    <section class="dbadmin-card">
-        <h2>📝 Auditoria de Ações Administrativas</h2>
-        <p>Registo dos últimos movimentos feitos pelos administradores.</p>
-        <div class="tabela-container" style="overflow-x:auto;">
+    <section class="card">
+        <span class="secao-titulo">📝 Auditoria de Ações</span>
+        <p style="color: var(--cinzento); margin-bottom: 16px;">Registo dos últimos movimentos feitos pelos administradores.</p>
+        <div class="tabela-container">
             <table class="audit-table">
                 <thead>
                     <tr>
@@ -101,12 +91,17 @@
                         </tr>
                     </c:forEach>
                     <c:if test="${empty auditLogs}">
-                        <tr><td colspan="6" style="text-align:center; color:var(--cinzento); padding:24px;">Sem registos de auditoria disponíveis.</td></tr>
+                        <tr><td colspan="6" style="text-align: center; color: var(--cinzento); padding: 24px;">Sem registos de auditoria disponíveis.</td></tr>
                     </c:if>
                 </tbody>
             </table>
         </div>
     </section>
 </main>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
 </html>

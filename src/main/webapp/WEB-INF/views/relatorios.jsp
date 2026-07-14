@@ -275,5 +275,11 @@
         });
     });
 </script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
+</html>
 </html>

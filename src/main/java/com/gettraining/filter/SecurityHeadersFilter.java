@@ -29,7 +29,7 @@ public class SecurityHeadersFilter implements Filter {
         resp.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
         resp.setHeader("Permissions-Policy", "geolocation=(), microphone=(), camera=(), payment=()");
         resp.setHeader("X-XSS-Protection", "1; mode=block");
-        resp.setHeader("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; frame-ancestors 'none';");
+        resp.setHeader("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' https://fonts.gstatic.com; frame-ancestors 'none';");
 
         chain.doFilter(request, response);
     }

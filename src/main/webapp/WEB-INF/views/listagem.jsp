@@ -129,7 +129,7 @@
                                     </td>
                                     <td><span style="color:var(--cinzento);font-size:13px;">${ins.formando.email}</span></td>
                                     <td><strong>${ins.curso.nome}</strong></td>
-                                    <td><span class="badge-horario">${ins.curso.horario}</span></td>
+                                    <td><span class="badge-horario">${ins.curso.horaInicio} - ${ins.curso.horaFim}</span></td>
                                     <td>
                                         <div style="display:flex;gap:6px;flex-wrap:wrap;">
                                             <a href="${pageContext.request.contextPath}/listagem?id=${ins.id}"
@@ -249,5 +249,10 @@
         }
     });
 </script>
+
+<footer class="rodape">
+    <p>&copy; 2026 GET Training Academy Center · geral@get-ao.com · www.get-ao.com</p>
+</footer>
+
 </body>
 </html>

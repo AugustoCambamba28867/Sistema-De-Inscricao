@@ -12,7 +12,7 @@ import java.util.List;
 public class AdminDAO {
 
     public Admin autenticar(String username, String password) throws SQLException {
-        String sql = "SELECT id, username, papel, password FROM administrador WHERE username = ?";
+        String sql = "SELECT id, username, papel, password, must_change_password FROM administrador WHERE username = ?";
 
         try (Connection conn = ConexaoBD.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -21,9 +21,14 @@ public class AdminDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    int id = rs.getInt("id");
                     String storedHash = rs.getString("password");
+                    boolean mustChangePassword = rs.getBoolean("must_change_password");
                     if (PasswordUtil.verifyPassword(password, storedHash)) {
-                        return new Admin(rs.getInt("id"), rs.getString("username"), rs.getString("papel"));
+                        if (PasswordUtil.isLegacyHash(storedHash)) {
+                            atualizarSenha(id, password, mustChangePassword);
+                        }
+                        return new Admin(id, rs.getString("username"), rs.getString("papel"), mustChangePassword);
                     }
                 }
             }
@@ -33,13 +38,35 @@ public class AdminDAO {
 
     public void inserir(String username, String password, String papel) throws SQLException {
         String hashedPassword = PasswordUtil.hashPassword(password);
-        String sql = "INSERT INTO administrador (username, password, papel) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO administrador (username, password, papel, must_change_password) VALUES (?, ?, ?, false)";
 
         try (Connection conn = ConexaoBD.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ps.setString(2, hashedPassword);
             ps.setString(3, papel);
+            ps.executeUpdate();
+        }
+    }
+
+    public void atualizarSenha(int id, String novaSenha, boolean mustChangePassword) throws SQLException {
+        String hashedPassword = PasswordUtil.hashPassword(novaSenha);
+        String sql = "UPDATE administrador SET password = ?, must_change_password = ? WHERE id = ?";
+
+        try (Connection conn = ConexaoBD.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, hashedPassword);
+            ps.setBoolean(2, mustChangePassword);
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        }
+    }
+
+    public void marcarSenhaComoAlterada(int id) throws SQLException {
+        String sql = "UPDATE administrador SET must_change_password = false WHERE id = ?";
+        try (Connection conn = ConexaoBD.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
             ps.executeUpdate();
         }
     }

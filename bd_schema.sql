@@ -12,9 +12,12 @@
 
 -- ---- Tabela: curso ----------------------------------------
 CREATE TABLE IF NOT EXISTS curso (
-    id      SERIAL PRIMARY KEY,
-    nome    VARCHAR(150) NOT NULL,
-    horario VARCHAR(50)  NOT NULL  -- Manhã, Tarde, Fim de Tarde, Sábado
+    id          SERIAL PRIMARY KEY,
+    nome        VARCHAR(150) NOT NULL,
+    periodo     DATE,                -- data da formação
+    hora_inicio VARCHAR(5),          -- HH:MM
+    hora_fim    VARCHAR(5),          -- HH:MM
+    duracao     VARCHAR(50)          -- ex: "40 horas", "5 dias"
 );
 
 -- ---- Tabela: formando -------------------------------------

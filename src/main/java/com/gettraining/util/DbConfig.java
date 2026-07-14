@@ -9,7 +9,7 @@ public final class DbConfig {
     public static final String DB_SUPERUSER_USER = getEnvOrDefault("DB_SUPERUSER_USER", "postgres");
     public static final String DB_SUPERUSER_PASSWORD = getEnvOrDefault("DB_SUPERUSER_PASSWORD", "atac");
     public static final String ADMIN_USERNAME = getEnvOrDefault("DB_ADMIN_USERNAME", "admin");
-    public static final String ADMIN_PASSWORD = getEnvOrDefault("DB_ADMIN_PASSWORD", "");
+    public static final String ADMIN_PASSWORD = getEnvOrDefault("DB_ADMIN_PASSWORD", "admin");
 
     private DbConfig() {
         // utilitário

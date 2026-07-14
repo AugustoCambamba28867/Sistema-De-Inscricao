@@ -115,21 +115,21 @@ public class DashboardDAO {
         return map;
     }
 
-    /** Retorna inscrições por horário */
+    /** Retorna inscrições por hora de início */
     public Map<String, Integer> getInscricoesPorHorario() throws SQLException {
         Map<String, Integer> map = new LinkedHashMap<>();
         String sql = """
-            SELECT c.horario, COUNT(i.id) AS total
+            SELECT COALESCE(c.hora_inicio, 'Não definido') AS horario_inicio, COUNT(i.id) AS total
             FROM curso c
             JOIN formando f ON c.id = f.curso_id
             JOIN inscricao i ON f.id = i.formando_id
-            GROUP BY c.horario
+            GROUP BY COALESCE(c.hora_inicio, 'Não definido')
             ORDER BY total DESC
             """;
         try (Connection conn = ConexaoBD.getConexao();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) map.put(rs.getString("horario"), rs.getInt("total"));
+            while (rs.next()) map.put(rs.getString("horario_inicio"), rs.getInt("total"));
         }
         return map;
     }
